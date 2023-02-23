@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Finor - Web App For Money Management" />
+    <title>Create Expenses</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background-color: #f2f2f2;
+        box-sizing: border-box;
+      }
+      div.header {
+        background-color: #1e1e1e;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        position: sticky;
+        top: 0;
+      }
+      div.app__container {
+        margin: 30px auto;
+        width: 80%;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      div.form__field {
+        margin: 10px 0;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.2rem;
+      }
+
+      div.form__field input, div.form__field select { 
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.2rem;
+      } 
+      form button {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        background-color: #1e1e1e;
+        color: #fff;
+        cursor: pointer;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      table th, table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+      table th {
+        background-color: #1e1e1e;
+        color: #fff;
+      }
+      table tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      table tr:hover {
+        background-color: #ddd;
+      }
+      table td {
+        text-align: center;
+      }
+
+      @media screen and (max-width: 768px) {
+        table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Finor</h1>
+    </div>
+    <p>username: mock_user</p>
+    <div class="app__container">
+      <h1>Ingresa un nuevo gasto, {{name}}</h1>
+      <form>
+        <div class="form__field">
+          <label for="valor">Valor:</label>
+          <input type="number" name="valor" required />
+        </div>
+
+        <div class="form__field">
+          <label for="descripcion">Descripción:</label>
+          <input type="text" name="descripcion" required />
+        </div>
+
+        <div class="form__field">
+          <label for="categoria">Categoría:</label>
+          <select id="categoria" name="categoria" required>
+            <option value="empresa">Empresa</option>
+            <option value="hogar">Hogar</option>
+            <option value="educacion">Educacion</option>
+            <option value="entretenimiento">Entretenimiento</option>
+          </select>
+        </div>
+
+        <div class="form__field">
+          <label for="imagen"> Imagen: </label>
+          <input name="imagen" type="text" placeholder="under construction / disabled" disabled />
+        </div>
+
+        <button id="submitBtn" type="submit">Guardar</button>
+      </form>
+    </div>
+    <p>reload to update the expenses table</p>
+    <div class="app__container">
+      <h1>Mis Gastos</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Valor</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Imagen</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for expense in expenses %}
+          <tr>
+            <td>
+              <p>$ {{ expense.value|floatformat:2}}</p>
+            </td>
+            <td>
+              <p>{{ expense.description }}</p> 
+               </td>
+            <td>
+              <p>{{ expense.category }}</p>
+            </td>
+            <td>
+              <img src="{{ expense.photo }}" alt="expense image" width="100" />
+             </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#submitBtn").click(function (event) {
+          event.preventDefault();
+          $.ajax({
+            url: '{% url "get_expenses" %}',
+            type: "GET",
+            data: {
+              valor: $("input[name=valor]").val(),
+              descripcion: $("input[name=descripcion]").val(),
+              categoria: $("select[name=categoria]").val(),
+              imagen: "https://esteventorr.github.io/images/graphical/no-image.png",
+            },
+            success: function (data) {
+              console.log(data, "Function called successfully");
+            },
+            error: function () {
+              console.log("Error calling function");
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

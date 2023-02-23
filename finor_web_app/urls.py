@@ -14,8 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from sandbox import views as sandboxViews
 
 urlpatterns = [
+    path("__reload__/", include("django_browser_reload.urls")),
+    path('', sandboxViews.saved_expenses),
+    path('get_expenses/', sandboxViews.get_expenses, name="get_expenses"),
     path('admin/', admin.site.urls),
 ]
