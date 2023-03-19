@@ -25,7 +25,7 @@ readObject = {
     }
 }
 
-endpointAWS = '';
+endpointAWS = 'https://i1fkmq0q73.execute-api.us-east-1.amazonaws.com/test/dynamodbmanager';
 
 
 def generate_post_request(url, params={}):
@@ -66,3 +66,4 @@ def save_expense(value, description, categoty, image):
         return response  # user.get('name').get('first')
 
     return ''
+    #Prueba
