@@ -16,5 +16,145 @@ body {
 }
 
 /* Styles for App Functions */
+.header { 
 
+    background-color: #1e1e1e;  
+
+    text-align: center; 
+
+    position: sticky; 
+
+    z-index: 1; 
+
+    top: 0; 
+
+    height: 80px; 
+
+  } 
+
+   
+
+  .header .header__title a { 
+
+    display: block;  
+
+    padding: 20px; 
+
+    color: #fff; 
+
+    text-decoration: none; 
+
+    font-size: 2rem; 
+
+  } 
+
+   
+
+  .app__container { 
+
+    margin: auto; 
+
+    width: 90%; 
+
+    max-width: 1024px; 
+
+    background-color: #fff; 
+
+    border-radius: 5px; 
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+
+  } 
+
+   
+
+  .app__container .main-menu { 
+
+    padding: 20px; 
+
+    height: 600px; 
+
+    display: flex; 
+
+    flex-direction: column; 
+
+    justify-content: space-around; 
+
+    align-items: center; 
+
+  } 
+
+   
+
+  .app__container main .main-menu__options {  
+
+    flex-grow: 1; 
+
+    display: flex; 
+
+    flex-direction: column; 
+
+    justify-content: space-around; 
+
+    align-items: center; 
+
+  } 
+
+   
+
+  .app__container .main-menu__options a.main-menu__option{ 
+
+    display: block; 
+
+    width: 100%; 
+
+    padding: 10px; 
+
+    text-align: center; 
+
+    text-decoration: none; 
+
+    color: white; 
+
+    background-color: #1e1e1e; 
+
+    font-size: 1.5rem; 
+
+    border: 1px solid #ccc; 
+
+    border-radius: 100px; 
+
+    transition: all 0.2s ease-in-out; 
+
+  } 
+
+   
+
+  .app__container h3.title {  
+
+    margin: 0;  
+
+    position: sticky; 
+
+    z-index: 0; 
+
+    top: 80px; 
+
+    background-color: #fafafa; 
+
+    border-bottom: 1px solid #ccc; 
+
+  } 
+
+   
+
+  .app__container h4.title { 
+
+    padding: 20px; 
+
+    text-align: center; 
+
+    margin: 0; 
+
+  } 
 /* */
