@@ -1,0 +1,71 @@
+<div class="finor-form"> 
+
+    <h1>Ingresa un nuevo gasto</h1> 
+  
+    <form id="expenseForm" data-url="{% url 'create_expense' %}"> 
+  
+      {% csrf_token %} 
+  
+      <div class="form__field"> 
+  
+        <label for="value">Valor:</label> 
+  
+        <input type="number" name="value" required /> 
+  
+      </div> 
+  
+      <div class="form__field"> 
+  
+        <label for="description">Descripción:</label> 
+  
+        <input type="text" name="description" required /> 
+  
+      </div> 
+  
+      <div class="form__field"> 
+  
+        <label for="category">Categoría:</label> 
+  
+        <select id="categoria" name="category" required> 
+  
+          <option value="empresa">Empresa</option> 
+  
+          <option value="hogar">Hogar</option> 
+  
+          <option value="educacion">Educacion</option> 
+  
+          <option value="entretenimiento">Entretenimiento</option> 
+  
+        </select> 
+  
+      </div> 
+  
+      <div class="form__field"> 
+  
+        <label for="photo"> Imagen: </label> 
+  
+        <input 
+  
+          name="photo" 
+  
+          type="text" 
+  
+          placeholder="under construction / disabled" 
+  
+          disabled 
+  
+        /> 
+  
+      </div> 
+  
+      <button id="submitBtn" type="submit">Guardar</button> 
+  
+      <div id="message"></div> 
+  
+    </form> 
+  
+    {% load static %} 
+  
+    <script src="{% static 'js/create_expense.js' %}" defer></script> 
+  
+  </div> 
