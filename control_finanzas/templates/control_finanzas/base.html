@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/styles.css' %}"
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Finor - Web App For Money Management" />
+    <title>Finor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="app__container">
+      <header class="header">
+        <div class="header__title">
+          <a href="/" class="btn">Finor</a>
+        </div>
+      </header>
+      <main> 
+        {% block content %} {% endblock %}
+      </main>
+    </div>
+  </body>
+</html>
