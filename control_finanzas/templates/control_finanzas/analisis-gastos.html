@@ -7,6 +7,18 @@
   <div class="tabla-transacciones">
     {% include "control_finanzas/components/expenses-table.html" %}
   </div>
-   
+   <div>
+    <h4 class="title">⚠️ - Tiempo de Análisis - ⚠️</h4>
+    <div class="form__field">
+      <label for="months-quantity">Meses:</label>
+      <select id="categoria" name="months-quantity" required>
+        <option value="empresa">1</option>
+        <option value="hogar">3</option>
+        <option value="educacion">4</option>
+        <option value="entretenimiento">6</option>
+      </select>
+    </div>
+  </div>
+  
 </div>
 {% endblock %}
