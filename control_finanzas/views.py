@@ -4,8 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
 from control_finanzas.models import Expense, Goal
-from .api import POST_expense, POST_goal
-from .api import GET_expenses, POST_expense
+from .api import POST_expense, POST_goal, GET_goals, GET_expenses, POST_expense
 
 def main_menu(request):
     return render(request, 'control_finanzas/main-menu.html')
@@ -22,6 +21,16 @@ def ingresar_gastos(request):
         mensaje = "Error al crear la transacción."
     logging.info(mensaje)
     return render(request, 'control_finanzas/crear-gastos.html', {'mensaje': mensaje, "expenses": expenses})
+
+def ingresar_objetivos(request):
+    logging.info("Ingresando objetivos...")
+    goals = GET_goals()
+    if goals:
+        mensaje = "Objetivo creado con éxito."
+    else:
+        mensaje = "Error al crear el objetivo."
+    logging.info(mensaje)
+    return render(request, 'control_finanzas/crear-objetivos.html', {'mensaje': mensaje, "goals": goals})
 
 def analisis_gastos(request):
     logging.info("Analisis gastos...")

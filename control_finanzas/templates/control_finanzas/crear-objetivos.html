@@ -1,0 +1,9 @@
+{% extends "control_finanzas/base.html" %} {% block content %}
+<div class="registro registro-objetivos">
+  <h3 class="title">▶️ Registro De Objetivos 🏁</h3> 
+  {% include "control_finanzas/components/goal-form.html" %}
+</div>
+<div class="tabla-objetivos">
+  {% include "control_finanzas/components/goals-table.html" %}
+</div>
+{% endblock %}
