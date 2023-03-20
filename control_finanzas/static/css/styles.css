@@ -165,8 +165,7 @@ body {
   padding: 20px; 
 }
 
-/* Estilos para los títulos de cada card /
-.ranking__card h5 {
+.rankingcard h5 {
   background-color: black;
   color: white;
   border-radius: 5px;
@@ -174,12 +173,10 @@ body {
   margin-bottom: 10px;
 }
 
-/ Estilos para los números de item en las listas ordenadas /
-.ranking__card ol li {
+.rankingcard ol li {
   font-weight: bold;
 }
 
-/ Estilos para los números de item en las listas sin orden */
 .ranking__card ul li {
   font-weight: bold;
 }
