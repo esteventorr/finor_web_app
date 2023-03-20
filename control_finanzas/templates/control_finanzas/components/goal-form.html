@@ -3,27 +3,27 @@
     <form id="goalForm" data-url="{% url 'create_goal' %}">
       {% csrf_token %}
   
-      <div class="formfield">
+      <div class="form__field">
         <label for="name">Nombre:</label>
         <input type="text" name="name" required />
       </div>
-      <div class="formfield">
+      <div class="form__field">
         <label for="set_date">Fecha de inicio:</label>
         <input type="date" name="set_date" required />
       </div>
-      <div class="formfield">
+      <div class="form__field">
         <label for="enable_target_date">Habilitar fecha límite:</label>
         <input type="checkbox" name="enable_target_date" />
       </div>
-      <div class="formfield">
+      <div class="form__field">
         <label for="target_date">Fecha límite:</label>
         <input type="date" name="target_date" required />
       </div>
-      <div class="formfield">
+      <div class="form__field">
         <label for="value">Valor:</label>
         <input type="number" name="value" required />
       </div>
-      <div class="formfield">
+      <div class="form__field">
         <label for="description">Descripción:</label>
         <input type="text" name="description" required />
       </div>

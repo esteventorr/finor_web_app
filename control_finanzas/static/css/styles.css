@@ -150,7 +150,7 @@ body {
   padding: 20px;
 }
 
-.rankingcards-container {
+.ranking__cards-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
@@ -158,14 +158,14 @@ body {
 }
 
 /* Estilos para cada card */
-.rankingcard {
+.ranking__card {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); 
   padding: 20px; 
 }
 
-.rankingcard h5 {
+.ranking__card h5 {
   background-color: black;
   color: white;
   border-radius: 5px;
@@ -173,7 +173,7 @@ body {
   margin-bottom: 10px;
 }
 
-.rankingcard ol li {
+.ranking__card ol li {
   font-weight: bold;
 }
 
