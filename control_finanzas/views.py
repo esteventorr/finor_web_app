@@ -9,6 +9,9 @@ from .api import POST_expense
 def main_menu(request):
     return render(request, 'control_finanzas/main-menu.html')
 
+def under_development(request):
+    return render(request, 'control_finanzas/under-development.html', {})
+
 @csrf_exempt
 def create_expense(request):
     logging.info("Creando gasto...") 
