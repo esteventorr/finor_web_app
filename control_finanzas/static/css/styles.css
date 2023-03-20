@@ -130,3 +130,105 @@ body {
   text-align: center;
   margin: 0;
 }
+
+.analisis-gastos button {
+  margin: 10px auto; 
+  margin-top: 0px; 
+}
+
+.analisis-gastos button a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.ranking {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.rankingcards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  margin: 20px;
+}
+
+/* Estilos para cada card */
+.rankingcard {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); 
+  padding: 20px; 
+}
+
+.rankingcard h5 {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.rankingcard ol li {
+  font-weight: bold;
+}
+
+.ranking__card ul li {
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+table th {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+table tr:hover {
+  background-color: #ddd;
+}
+table td {
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .app__container {
+    width: 100%;
+    max-width: auto;
+    min-height: 100vh;
+  }
+  .finor-form .form__field input, .finor-form .form__field select {
+    width: 80%;
+    margin: auto;
+  }
+
+  .finor-form {
+    margin-top: 40px;
+  } 
+
+  .ranking__cards-container {
+    grid-template-columns: 1fr;
+  }
+  .app__container .ranking h4.title {
+    padding: 5px;
+  }
+  
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

@@ -23,6 +23,16 @@ def ingresar_gastos(request):
     logging.info(mensaje)
     return render(request, 'control_finanzas/crear-gastos.html', {'mensaje': mensaje, "expenses": expenses})
 
+def analisis_gastos(request):
+    logging.info("Analisis gastos...")
+    expenses = GET_expenses()
+    if expenses:
+        mensaje = "Transacción creada con éxito."
+    else:
+        mensaje = "Error al crear la transacción."
+    logging.info(mensaje)
+    return render(request, 'control_finanzas/analisis-gastos.html', {'mensaje': mensaje, "expenses": expenses})
+
 @csrf_exempt
 def create_expense(request):
     logging.info("Creando gasto...") 
