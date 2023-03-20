@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
-from control_finanzas.models import Expense
-from .api import POST_expense
+from control_finanzas.models import Expense, Goal
+from .api import POST_expense, POST_goal
 from .api import GET_expenses, POST_expense
 
 def main_menu(request):
@@ -47,6 +47,28 @@ def create_expense(request):
         response = POST_expense(expense) 
         response_data = response.json()
         logging.info(response_data) 
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+    
+@csrf_exempt
+def create_goal(request):
+    logging.info("Creando objetivo...")
+    if request.method == 'POST':
+        data = request.POST
+        logging.info(data)
+        goal = Goal(
+            enable_target_date=data.get("enable_target_date", "false").lower() == 'on',
+            name=data["name"],
+            set_date=data["set_date"],
+            target_date=data["target_date"],
+            value=data["value"],
+            description=data["description"],
+            category=data["category"],
+        )
+        response = POST_goal(goal)
+        response_data = response.json()
+        logging.info(response_data)
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Invalid request method'})
