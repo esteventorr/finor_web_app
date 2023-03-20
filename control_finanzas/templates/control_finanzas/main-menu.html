@@ -1,10 +1,13 @@
+{% extends "control_finanzas/base.html" %} {% block content %} 
 <div class="main-menu">
   <h1>👋 Hola, Mock User!</h1>
   <!-- Botones -->
   <div class="main-menu__options">
     <!-- Ingresar Gastos -->
+    {% include "control_finanzas/components/button.html" with titulo="Ingresar gastos" url="/crear-gastos/" class="main-menu__option" %} 
     <!-- Analisis Gastos -->
     <!-- Mensajes Alertas -->
     <!-- Metas y Ahorros -->    
   </div>
 </div>
+{% endblock %} 
