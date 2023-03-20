@@ -4,13 +4,24 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
 from control_finanzas.models import Expense
-from .api import POST_expense 
+from .api import POST_expense
+from .api import GET_expenses, POST_expense
 
 def main_menu(request):
     return render(request, 'control_finanzas/main-menu.html')
 
 def under_development(request):
     return render(request, 'control_finanzas/under-development.html', {})
+
+def ingresar_gastos(request):
+    logging.info("Ingresando gastos...")
+    expenses = GET_expenses()
+    if expenses:
+        mensaje = "Transacción creada con éxito."
+    else:
+        mensaje = "Error al crear la transacción."
+    logging.info(mensaje)
+    return render(request, 'control_finanzas/crear-gastos.html', {'mensaje': mensaje, "expenses": expenses})
 
 @csrf_exempt
 def create_expense(request):
