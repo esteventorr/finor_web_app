@@ -6,4 +6,5 @@ urlpatterns = [
     path('crear-gastos/', views.ingresar_gastos, name='crear_gastos'),
     path('create_expense/', views.create_expense, name='create_expense'),
     path('analisis-gastos/', views.analisis_gastos, name='analisis_gastos'),
+    path('mensajes-alertas/', views.under_development, name='mensajes_alertas'),
 ]
