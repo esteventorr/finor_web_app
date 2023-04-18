@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
 from control_finanzas.models import Expense, Goal, Reminder, Account
-from .api import POST_goal, GET_goals, GET_expenses, POST_expense, GET_reminders, POST_reminder, GET_accounts, POST_account
+from .api import POST_goal, GET_goals, GET_expenses, POST_expense, GET_reminders, POST_reminder
 
 def main_menu(request):
     return render(request, 'control_finanzas/main-menu.html')
