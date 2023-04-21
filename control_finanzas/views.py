@@ -110,3 +110,6 @@ def create_reminder(request):
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Invalid request method'})
+    
+def calendario(request):
+    return render(request, 'control_finanzas/main-menu.html')
