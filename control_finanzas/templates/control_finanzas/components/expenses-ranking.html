@@ -1,0 +1,63 @@
+<!--<div>
+    <h4 class="title">⚠️ - Tiempo de Análisis - ⚠️</h4>
+    <div class="form__field">
+      <label for="months-quantity">Meses:</label>
+      <select id="categoria" name="months-quantity" required>
+        <option>1</option>
+        <option>3</option>
+        <option>4</option>
+        <option>6</option>
+      </select>
+    </div>
+  </div>
+  <div id="rankings" class="ranking">
+    <h4 class="title">⚠️ - Rankings Gastos Por Categoría - ⚠️</h4>
+    <div class="ranking__cards-container">
+      <div class="ranking__card top_empresa">
+        <h5>Empresa</h5>
+        <ul>
+          <li><b>1.</b> Nomina</li>
+          <li><b>2.</b> Peajes</li>
+          <li><b>3.</b> Caja Menor</li>
+        </ul>
+      </div>
+
+      <div class="ranking__card top_hogar">
+        <h5>Hogar</h5>
+        <ul>
+          <li><b>1.</b> Alquiler</li>
+          <li><b>2.</b> Mercado</li>
+          <li><b>3.</b> Servicios EPM</li>
+        </ul>
+      </div>
+
+      <div class="ranking__card top_educacion">
+        <h5>Educación</h5>
+        <ul>
+          <li><b>1.</b> Matricula EAFIT</li>
+          <li><b>2.</b> Libros Maestría</li>
+          <li><b>3.</b> Curso Física En Hardvard</li>
+        </ul>
+      </div>
+
+      <div class="ranking__card top_entretenimiento">
+        <h5>Entretenimiento</h5>
+        <ul>
+          <li><b>1.</b> PS Plus Deluxe</li>
+          <li><b>2.</b> DTV GO</li>
+          <li><b>3.</b> HBO Max</li>
+        </ul>
+      </div>
+    </div>
+  </div>-->
+
+{% block content %}
+  <div class="expenses-ranking">
+    <h3 class="title">▶️ Ranking de gastos por categoría 🤖</h3>
+    <form method="get">
+      <label for="meses">Meses a analizar:</label>
+      <input type="number" id="meses" name="meses" min="1" max="12" value="1">
+      <button type="submit">Analizar</button>
+    </form>
+  </div>
+{% endblock %}
