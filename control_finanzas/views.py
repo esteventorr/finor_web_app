@@ -61,7 +61,8 @@ def create_expense(request):
             value=data["value"], 
             description=data["description"],
             category=data["category"],
-            photo="https://esteventorr.github.io/images/graphical/no-image.png"
+            photo="https://esteventorr.github.io/images/graphical/no-image.png",
+            date=data["date"],
         )
         response = POST_expense(expense) 
         response_data = response.json()

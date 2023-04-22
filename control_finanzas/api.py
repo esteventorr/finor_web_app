@@ -30,7 +30,7 @@ def GET_expenses() -> list[Expense]:
     if response.status_code == 200:
         # return response json() as Expense array
         expenses = [Expense(id=e["id"], value=e["value"], user=e["user"], description=e["description"],
-                            category=e["category"], photo=e["photo"]) for e in response.json().get('items')]
+                            category=e["category"], photo=e["photo"], date=e["date"] ) for e in response.json().get('items')]
         logging.info(expenses)
         logging.info(expenses[0].user)
         return expenses
@@ -50,6 +50,7 @@ def POST_expense(expense: Expense):
                 "description": expense.description,
                 "category": expense.category,
                 "photo": expense.photo,
+                "date": expense.date
             }
         }
     }
