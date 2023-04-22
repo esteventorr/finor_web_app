@@ -3,7 +3,11 @@
   <h3 class="title">▶️ Análisis Gastos 🤖</h3>
   <h4 class="title">📅 Movimientos del último mes 🏦</h4>
   <button>
-    <a href="/crear-gastos/">Agregar Gasto</a></button>
+    <a href="/crear-gastos/">Agregar Gasto</a>
+  </button>
+  <button>
+    <a href="#rankings">Rankings</a>
+  </button>
   <div class="tabla-transacciones">
     {% include "control_finanzas/components/expenses-table.html" %}
   </div>
@@ -19,7 +23,7 @@
       </select>
     </div>
   </div>
-  <div class="ranking">
+  <div id="rankings" class="ranking">
     <h4 class="title">⚠️ - Rankings Gastos Por Categoría - ⚠️</h4>
     <div class="rankingcards-container">
       <div class="rankingcard top_empresa">
