@@ -1,5 +1,7 @@
 from datetime import datetime
 import logging
+import os
+import time
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
@@ -9,12 +11,56 @@ from .api import POST_goal, GET_goals, GET_expenses, POST_expense, GET_reminders
 
 from itertools import groupby
 from operator import itemgetter
+from PIL import Image
+from io import BytesIO
+from django.core.files.images import ImageFile
+from django.core.files import File
+from django.core.files.storage import default_storage
+from django.conf import settings
+
+def process_image(image):
+    try:
+        logging.info(f"Procesando imagen {image}")
+        size = (800, 800)
+        img = Image.open(image).convert('RGB')
+        # Corregir la orientación de la imagen utilizando la información EXIF
+        if hasattr(img, "_getexif") and img._getexif() is not None:
+            exif = img._getexif()
+            orientation = exif.get(0x0112, 1)  # 0x0112 es la etiqueta EXIF para orientación
+
+            # Aplicar la transformación según la orientación
+            if orientation == 2:
+                img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 3:
+                img = img.rotate(180)
+            elif orientation == 4:
+                img = img.rotate(180).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 5:
+                img = img.rotate(-90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 6:
+                img = img.rotate(-90, expand=True)
+            elif orientation == 7:
+                img = img.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 8:
+                img = img.rotate(90, expand=True)        
+        img.thumbnail(size)
+        img_io = BytesIO()
+        img.save(img_io, format='JPEG', quality=70)
+        img_io.seek(0)
+        logging.info(f"Imagen procesada {img_io}")
+        return img_io
+    except Exception as e:
+        logging.error(f"Error al procesar la imagen: {e}")
+        raise e
+
 
 def main_menu(request):
     return render(request, 'control_finanzas/main-menu.html')
 
+
 def under_development(request):
     return render(request, 'control_finanzas/under-development.html', {})
+
 
 def ingresar_gastos(request):
     logging.info("Ingresando gastos...")
@@ -26,6 +72,7 @@ def ingresar_gastos(request):
     logging.info(mensaje)
     return render(request, 'control_finanzas/crear-gastos.html', {'mensaje': mensaje, "expenses": expenses})
 
+
 def ingresar_objetivos(request):
     logging.info("Ingresando objetivos...")
     goals = GET_goals()
@@ -35,6 +82,7 @@ def ingresar_objetivos(request):
         mensaje = "Error al crear el objetivo."
     logging.info(mensaje)
     return render(request, 'control_finanzas/crear-objetivos.html', {'mensaje': mensaje, "goals": goals})
+
 
 def ingresar_recordatorios(request):
     logging.info("Ingresando recordatorios...")
@@ -46,15 +94,18 @@ def ingresar_recordatorios(request):
     logging.info(mensaje)
     return render(request, 'control_finanzas/crear-recordatorios.html', {'mensaje': mensaje, "reminders": reminders})
 
+
 def analisis_gastos(request):
     expenses = GET_expenses()
     rankings = []
     if expenses:
         # Obtener los gastos agrupados por categoría
-        expenses_by_category = {k: list(g) for k, g in groupby(expenses, key=lambda x: x.category)}
+        expenses_by_category = {k: list(g) for k, g in groupby(
+            expenses, key=lambda x: x.category)}
         # Calcular el ranking de los 3 mayores gastos por categoría
         for category, category_expenses in expenses_by_category.items():
-            top_expenses = sorted(category_expenses, key=lambda x: x.value, reverse=True)[:3]
+            top_expenses = sorted(
+                category_expenses, key=lambda x: x.value, reverse=True)[:3]
             rankings.append((category, top_expenses))
         mensaje = "Transacción creada con éxito."
     else:
@@ -66,22 +117,54 @@ def analisis_gastos(request):
 
 @csrf_exempt
 def create_expense(request):
-    logging.info("Creando gasto...") 
+    logging.info("Creando gasto...")
     if request.method == 'POST':
-        data = request.POST 
-        expense = Expense( 
-            value=data["value"], 
+        data = request.POST
+        image = request.FILES.get('photo', None)
+        logging.info(f'Imagen: {image}')
+
+        try:
+            if image:
+              # Crea el directorio 'media' si no existe
+                if not os.path.exists(settings.MEDIA_ROOT):
+                  os.makedirs(settings.MEDIA_ROOT)
+                
+                processed_image = process_image(image)
+                logging.info(f"IMAGE _ Imagen procesada: {processed_image}")
+                image_name = f'image_{int(time.time() * 1000)}.jpg'
+                logging.info(f"IMAGE _ Nombre de la imagen: {image_name}")
+                # Guarda la imagen en el servidor local Django
+                image_path = f'{settings.MEDIA_ROOT}/{image_name}'
+                logging.info(f"IMAGE _ Ruta de la imagen: {image_path}")
+                with open(image_path, 'wb') as f:
+                  logging.info(f"IMAGE _ Guardando imagen en {image_path}")
+                  f.write(processed_image.getvalue())
+                  logging.info(f"IMAGE _ Imagen guardada en {image_path}")
+                
+                # Guarda la URL de la imagen en la variable image_url
+                image_url = f'{settings.MEDIA_URL}{image_name}'
+                logging.info(f"IMAGE _ URL de la imagen: {image_url}")
+            else:
+                image_url = "https://esteventorr.github.io/images/graphical/no-image.png"
+        except Exception as e:
+            logging.error(f"Error al procesar la imagen: {e}")
+            image_url = "https://esteventorr.github.io/images/graphical/no-image.png"
+
+        expense = Expense(
+            value=data["value"],
             description=data["description"],
             category=data["category"],
-            photo="https://esteventorr.github.io/images/graphical/no-image.png",
+            photo=image_url,
             date=data["date"],
         )
-        response = POST_expense(expense) 
+
+        response = POST_expense(expense)
         response_data = response.json()
-        logging.info(response_data) 
+        logging.info(response_data)
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Invalid request method'})
+
 
 @csrf_exempt
 def create_goal(request):
@@ -90,7 +173,8 @@ def create_goal(request):
         data = request.POST
         logging.info(data)
         goal = Goal(
-            enable_target_date=data.get("enable_target_date", "false").lower() == 'on',
+            enable_target_date=data.get(
+                "enable_target_date", "false").lower() == 'on',
             name=data["name"],
             set_date=data["set_date"],
             target_date=data["target_date"],
@@ -105,13 +189,14 @@ def create_goal(request):
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
+
 @csrf_exempt
 def create_reminder(request):
     logging.info("Creando recordatorio...")
     if request.method == 'POST':
         data = request.POST
         logging.info(data)
-        reminder = Reminder( 
+        reminder = Reminder(
             name=data["name"],
             set_date=data["set_date"],
             target_date=data["target_date"],
@@ -123,21 +208,25 @@ def create_reminder(request):
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Invalid request method'})
-    
+
+
 def calendario(request):
     return render(request, 'control_finanzas/calendar.html')
-    
+
+
 def mensajes_alertas(request):
     expenses = GET_expenses()
     year = datetime.now().year - 1
     total_ingresos = calcular_total_ingresos(expenses, year)
-    valor_declaracion = 163445400  # Valor establecido para declarar renta (ejemplo)
+    # Valor establecido para declarar renta (ejemplo)
+    valor_declaracion = 163445400
     if total_ingresos > valor_declaracion:
         mensaje = f"¡Alerta! Tus ingresos totales del año pasado fueron de ${total_ingresos}, lo cual supera el valor establecido para declarar renta. Debes hacer la respectiva declaración de renta."
     else:
         mensaje = f"Tus ingresos totales del año pasado fueron de ${total_ingresos}, lo cual no supera el valor establecido para declarar renta. ¡Sigues sin tener que declarar renta!"
 
     return render(request, 'control_finanzas/mensajes-alertas.html', {"expenses": expenses, "mensaje": mensaje})
+
 
 def calcular_total_ingresos(expenses, year):
     total = 0

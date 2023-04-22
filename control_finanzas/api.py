@@ -49,7 +49,7 @@ def POST_expense(expense: Expense):
                 "user": expense.user,
                 "description": expense.description,
                 "category": expense.category,
-                "photo": expense.photo,
+                "photo": str(expense.photo),
                 "date": expense.date
             }
         }

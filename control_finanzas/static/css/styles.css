@@ -44,6 +44,13 @@ body {
   font-size: 1.2rem;
 }
 
+.finor-form .form__field select option[data-type="Gasto"] {
+  color: red;
+}
+.finor-form .form__field select option[data-type="No Gasto"] {
+  color: green;
+}
+
 .finor-form button,
 .analisis-gastos button {
   padding: 10px;
@@ -132,8 +139,8 @@ body {
 }
 
 .analisis-gastos button {
-  margin: 10px auto; 
-  margin-top: 0px; 
+  margin: 10px auto;
+  margin-top: 0px;
 }
 
 .analisis-gastos button a {
@@ -145,7 +152,7 @@ body {
   display: flex;
   flex-direction: column;
   margin: 20px;
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
   padding: 20px;
 }
@@ -161,8 +168,8 @@ body {
 .ranking__card {
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); 
-  padding: 20px; 
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  padding: 20px;
 }
 
 .ranking__card h5 {
@@ -210,14 +217,15 @@ table td {
     max-width: auto;
     min-height: 100vh;
   }
-  .finor-form .form__field input, .finor-form .form__field select {
+  .finor-form .form__field input,
+  .finor-form .form__field select {
     width: 80%;
     margin: auto;
   }
 
   .finor-form {
     margin-top: 40px;
-  } 
+  }
 
   .ranking__cards-container {
     grid-template-columns: 1fr;
@@ -225,7 +233,7 @@ table td {
   .app__container .ranking h4.title {
     padding: 5px;
   }
-  
+
   table {
     display: block;
     overflow-x: auto;

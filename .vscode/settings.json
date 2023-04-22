@@ -1,3 +1,6 @@
 {
-    "prettier.tabWidth": 2
+    "prettier.tabWidth": 2,
+    "emmet.includeLanguages": {
+      "django-html": "html"
+    }
 }
