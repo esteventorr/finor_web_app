@@ -50,14 +50,19 @@
       </div>
     </div>
   </div>-->
-
-{% block content %}
-  <div class="expenses-ranking">
-    <h3 class="title">▶️ Ranking de gastos por categoría 🤖</h3>
-    <form method="get">
-      <label for="meses">Meses a analizar:</label>
-      <input type="number" id="meses" name="meses" min="1" max="12" value="1">
-      <button type="submit">Analizar</button>
-    </form>
-  </div>
-{% endblock %}
+  {% block content %}
+  {% for category, top_expenses in rankings %}
+    <div class="ranking-categoria">
+        <h4>🏆 {{ category }} 🏆</h4>
+        <ul>
+        {% for expense in top_expenses %}
+            <li>
+                <p class="expense-value">$ {{ expense.value|floatformat:2 }}</p>
+                <p class="expense-description">{{ expense.description }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+  {% endblock %}
+  

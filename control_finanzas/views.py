@@ -6,6 +6,9 @@ from django.shortcuts import render
 from control_finanzas.models import Expense, Goal, Reminder, Account
 from .api import POST_goal, GET_goals, GET_expenses, POST_expense, GET_reminders, POST_reminder
 
+from itertools import groupby
+from operator import itemgetter
+
 def main_menu(request):
     return render(request, 'control_finanzas/main-menu.html')
 
@@ -43,14 +46,22 @@ def ingresar_recordatorios(request):
     return render(request, 'control_finanzas/crear-recordatorios.html', {'mensaje': mensaje, "reminders": reminders})
 
 def analisis_gastos(request):
-    logging.info("Analisis gastos...")
     expenses = GET_expenses()
+    rankings = []
     if expenses:
+        # Obtener los gastos agrupados por categoría
+        expenses_by_category = {k: list(g) for k, g in groupby(expenses, key=lambda x: x.category)}
+        # Calcular el ranking de los 3 mayores gastos por categoría
+        for category, category_expenses in expenses_by_category.items():
+            top_expenses = sorted(category_expenses, key=lambda x: x.value, reverse=True)[:3]
+            rankings.append((category, top_expenses))
         mensaje = "Transacción creada con éxito."
     else:
         mensaje = "Error al crear la transacción."
     logging.info(mensaje)
-    return render(request, 'control_finanzas/analisis-gastos.html', {'mensaje': mensaje, "expenses": expenses})
+    logging.info(f"Rankings: {rankings}")
+    return render(request, 'control_finanzas/analisis-gastos.html', {'mensaje': mensaje, "expenses": expenses, "rankings": rankings})
+
 
 @csrf_exempt
 def create_expense(request):
