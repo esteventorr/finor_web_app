@@ -1,0 +1,28 @@
+<table class="finor-table">
+  <thead>
+    <tr>
+      <th>Valor</th>
+      <th>Descripción</th>
+      <th>Categoría</th>
+      <th>Imagen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for expense in expenses %}
+    <tr>
+      <td>
+        <p>$ {{ expense.value|floatformat:2}}</p>
+      </td>
+      <td>
+        <p>{{ expense.description }}</p>
+      </td>
+      <td>
+        <p>{{ expense.category }}</p>
+      </td>
+      <td>
+        <img src="{{ expense.photo }}" alt="expense image" width="100" />
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
