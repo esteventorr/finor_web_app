@@ -1,40 +1,17 @@
+{% block content %}
 <div class="ranking">
-    <h4 class="title">⚠️ - Resumen de gastos últimos 12 meses - ⚠️</h4>
-    <div class="ranking__cards-container">
-      <div class="ranking__card top_empresa">
-        <h5>Empresa</h5>
-        <ul>
-          <li>Valor Total: 50,434,200 COP</li>
-          <li>Mes Más Caro: Enero</li>
-          <li>Día Más Caro: 30 Junio</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_hogar">
-        <h5>Hogar</h5>
-        <ul>
-          <li>Valor Total: 30,211,900 COP</li>
-          <li>Mes Más Caro: Diciembre</li>
-          <li>Día Más Caro: 24 Diciembre</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_educacion">
-        <h5>Educación</h5>
-        <ul>
-          <li>Valor Total: 12,034,100 COP</li>
-          <li>Mes Más Caro: Enero</li>
-          <li>Día Más Caro: 30 Noviembre</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_entretenimiento">
-        <h5>Entretenimiento</h5>
-        <ul>
-          <li>Valor Total: 8,301,550 COP</li>
-          <li>Mes Más Caro: Diciembre</li>
-          <li>Día Más Caro: 14 Julio</li>
-        </ul>
-      </div>
+  <h4 class="title">Total de gastos de los últimos 12 meses por categoría</h4>
+  <div class="ranking__cards-container">
+    {% for category, total_expenses in expenses_last_12_months_by_category.items %}
+    <div class="ranking__card">
+      <p>{{ category }}</p>
+      <p class="expense-value">$ {{ total_expenses|floatformat:2 }}</p>
+    </div>
+    {% endfor %}
+    <div class="ranking__card">
+      <p>Mes con mayor gasto:</p>
+      <p class="expense-value">{{ max_month }}</p>
     </div>
   </div>
+</div>
+{% endblock %}
