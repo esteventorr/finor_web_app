@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "removeEmptyLines",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "C:/Users/User/OneDrive/commands_palette/borrar_lineas_vacias.py",
+        "${file}"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "clear": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}
