@@ -2,16 +2,15 @@
 <div class="ranking">
   <h4 class="title">Total de gastos de los últimos 12 meses por categoría</h4>
   <div class="ranking__cards-container">
-    {% for category, total_expenses in expenses_last_12_months_by_category.items %}
+    {% for category, category_data in expenses_by_category.items %}
     <div class="ranking__card">
-      <p>{{ category }}</p>
-      <p class="expense-value">$ {{ total_expenses|floatformat:2 }}</p>
+      <h5>🏆 {{ category }} 🏆</h5>
+      <p class="expense-value">$ {{ category_data.expenses_last_12_months|floatformat:2 }}</p>
+      <p class="expense-value">Mes con mayor gasto: {{ category_data.max_month_by_category }}</p>
+      <p class="expense-value">Día con mayor gasto: {{ category_data.max_day_by_category }}</p>
     </div>
     {% endfor %}
-    <div class="ranking__card">
-      <p>Mes con mayor gasto:</p>
-      <p class="expense-value">{{ max_month }}</p>
-    </div>
   </div>
 </div>
 {% endblock %}
+

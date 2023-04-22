@@ -70,26 +70,57 @@ def analisis_gastos(request):
             if datetime.strptime(expense.date, '%Y-%m-%d') >= last_12_months:
                 expenses_last_12_months_by_category[expense.category] += int(expense.value)
 
-        # Calcular el mes con el mayor gasto total en los últimos 12 meses
-        expenses_last_12_months_by_month = defaultdict(int)
+        # Calcular el mes con el mayor gasto total en los últimos 12 meses por categoría
+        expenses_last_12_months_by_category_month = defaultdict(lambda: defaultdict(int))
         for expense in expenses:
             expense_date = datetime.strptime(expense.date, '%Y-%m-%d')
             if expense_date >= last_12_months:
                 month_year = expense_date.strftime('%m-%Y')
-                expenses_last_12_months_by_month[month_year] += int(expense.value)
+                expenses_last_12_months_by_category_month[expense.category][month_year] += int(expense.value)
 
-        max_month = None
-        max_month_total = 0
-        for month, total in expenses_last_12_months_by_month.items():
-            if total > max_month_total:
-                max_month_total = total
-                max_month = month
+        max_month_by_category = {}
+        for category, month_totals in expenses_last_12_months_by_category_month.items():
+            max_month = None
+            max_month_total = 0
+            for month, total in month_totals.items():
+                if total > max_month_total:
+                    max_month_total = total
+                    max_month = month
+            max_month_by_category[category] = max_month
+
+        # Calcular el día con el mayor gasto total en los últimos 12 meses por categoría
+        expenses_last_12_months_by_category_day = defaultdict(lambda: defaultdict(int))
+        for expense in expenses:
+            expense_date = datetime.strptime(expense.date, '%Y-%m-%d')
+            if expense_date >= last_12_months:
+                day = expense_date.strftime('%d-%m-%Y')
+                expenses_last_12_months_by_category_day[expense.category][day] += int(expense.value)
+
+        max_day_by_category = {}
+        for category, day_totals in expenses_last_12_months_by_category_day.items():
+            max_day = None
+            max_day_total = 0
+            for day, total in day_totals.items():
+                if total > max_day_total:
+                    max_day_total = total
+                    max_day = day
+            max_day_by_category[category] = max_day
 
         mensaje = "Transacción creada con éxito."
     else:
         mensaje = "Error al crear la transacción."
-
-    return render(request, 'control_finanzas/analisis-gastos.html', {'mensaje': mensaje, "expenses": expenses, "rankings": rankings, 'expenses_last_12_months_by_category': dict(expenses_last_12_months_by_category), 'max_month': max_month})
+    logging.info("aqui estoy-------------------")
+    logging.info(expenses_last_12_months_by_category)
+    logging.info(max_month_by_category)
+    logging.info(max_day_by_category)
+    return render(request, 'control_finanzas/analisis-gastos.html', {
+        'mensaje': mensaje,
+        "expenses": expenses,
+        "rankings": rankings,
+        'expenses_last_12_months_by_category': dict(expenses_last_12_months_by_category),
+        'max_month_by_category': max_month_by_category,
+        'max_day_by_category': max_day_by_category
+    })
 
 
 
