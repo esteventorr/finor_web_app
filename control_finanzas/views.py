@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -125,3 +126,24 @@ def create_reminder(request):
     
 def calendario(request):
     return render(request, 'control_finanzas/calendar.html')
+    
+def mensajes_alertas(request):
+    expenses = GET_expenses()
+    year = datetime.now().year - 1
+    total_ingresos = calcular_total_ingresos(expenses, year)
+    valor_declaracion = 163445400  # Valor establecido para declarar renta (ejemplo)
+    if total_ingresos > valor_declaracion:
+        mensaje = f"¡Alerta! Tus ingresos totales del año pasado fueron de ${total_ingresos}, lo cual supera el valor establecido para declarar renta. Debes hacer la respectiva declaración de renta."
+    else:
+        mensaje = f"Tus ingresos totales del año pasado fueron de ${total_ingresos}, lo cual no supera el valor establecido para declarar renta. ¡Sigues sin tener que declarar renta!"
+
+    return render(request, 'control_finanzas/mensajes-alertas.html', {"expenses": expenses, "mensaje": mensaje})
+
+def calcular_total_ingresos(expenses, year):
+    total = 0
+    for expense in expenses:
+        date_obj = datetime.strptime(expense.date, '%Y-%m-%d').date()
+        if date_obj.year == year and expense.category == "ingreso":
+            # Convertir el valor a entero antes de sumarlo
+            total += int(expense.value)
+    return total
