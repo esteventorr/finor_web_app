@@ -1,0 +1,34 @@
+{% block content %}
+<div>
+    <h4>GRÁFICO DE TORTA</h4>
+    <canvas id="expenses-by-category-chart"></canvas>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  var expenses_by_category_data = JSON.parse('{{ expenses_by_category_json|escapejs }}');
+  var expenses_by_category_chart = new Chart(document.getElementById('expenses-by-category-chart'), {
+    type: 'pie',
+    data: {
+      labels: Object.keys(expenses_by_category_data),
+      datasets: [{
+        data: Object.values(expenses_by_category_data),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)'
+        ]
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Gastos por categoría'
+      }
+    }
+  });
+  </script>
+{% endblock %}
