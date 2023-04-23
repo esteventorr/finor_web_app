@@ -1,0 +1,21 @@
+{% block content %}
+<div class="ranking">
+  <h4 class="title">Ranking de gastos</h4>
+  <div class="ranking__cards-container">
+    {% for category, top_expenses in rankings %}
+    <div class="ranking__card">
+      <h5>🏆 {{ category }} 🏆</h5>
+      <ul>
+        {% for expense in top_expenses %}
+        <li>
+          <b class="expense-position">{{ forloop.counter }}.</b>
+          <p class="expense-value">$ {{ expense.value|floatformat:2 }}</p>
+          <p class="expense-description">{{ expense.description }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
