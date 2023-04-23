@@ -78,11 +78,11 @@ def GET_goals() -> list[Goal]:
         }
     }
     response = requests.post(url, json=payload)
-    logging.info("Obteniendo Goals...")
-    logging.info(response)
-    logging.info(response.json())
-    logging.info(response.status_code)
-    logging.info(response.json().get('items'))
+    #logging.info("Obteniendo Goals...")
+    #logging.info(response)
+    #logging.info(response.json())
+    #logging.info(response.status_code)
+    #logging.info(response.json().get('items'))
 
     if response.status_code == 200:
         # return response json() as Goal array

@@ -271,8 +271,9 @@ def create_reminder(request):
 
 
 def calendario(request):
-    return render(request, 'control_finanzas/calendar.html')
-
+    current_month = datetime.now().month
+    filtered_goals = [goal for goal in GET_goals() if datetime.strptime(goal.target_date, '%Y-%m-%d').month == current_month]
+    return render(request, 'control_finanzas/calendar.html', {'goals': filtered_goals})
 
 def mensajes_alertas(request):
     expenses = GET_expenses()
