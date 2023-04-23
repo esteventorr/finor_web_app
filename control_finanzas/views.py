@@ -5,7 +5,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
+from dateutil.relativedelta import relativedelta
 from control_finanzas.models import Expense, Goal, Reminder, Account
+from control_finanzas.templatetags.custom_filters import currency
 from .api import POST_goal, GET_goals, GET_expenses, POST_expense, GET_reminders, POST_reminder
 
 from itertools import groupby
@@ -54,7 +56,11 @@ def process_image(image):
         logging.error(f"Error al procesar la imagen: {e}")
         raise e
 
-
+def get_total_by_category(expenses):
+    totals = defaultdict(int)
+    for expense in expenses:
+        totals[expense.category] += float(expense.value)
+    return totals
 
 def main_menu(request):
     return render(request, 'control_finanzas/main-menu.html')
@@ -271,21 +277,63 @@ def create_reminder(request):
 
 
 def calendario(request):
-    return render(request, 'control_finanzas/calendar.html')
-
+    current_month = datetime.now().month
+    filtered_goals = [goal for goal in GET_goals() if datetime.strptime(goal.target_date, '%Y-%m-%d').month == current_month]
+    return render(request, 'control_finanzas/calendar.html', {'goals': filtered_goals})
 
 def mensajes_alertas(request):
     expenses = GET_expenses()
+    
+    # Declaración de renta
     year = datetime.now().year - 1
     total_ingresos = calcular_total_ingresos(expenses, year)
     # Valor establecido para declarar renta (ejemplo)
     valor_declaracion = 163445400
     if total_ingresos > valor_declaracion:
-        mensaje = f"¡Alerta! Tus ingresos totales del año pasado fueron de ${total_ingresos}, lo cual supera el valor establecido para declarar renta. Debes hacer la respectiva declaración de renta."
+        mensaje = f"¡Alerta! Tus ingresos totales del año pasado fueron de {currency(total_ingresos)}, lo cual supera el valor establecido para declarar renta. Debes hacer la respectiva declaración de renta."
     else:
-        mensaje = f"Tus ingresos totales del año pasado fueron de ${total_ingresos}, lo cual no supera el valor establecido para declarar renta. ¡Sigues sin tener que declarar renta!"
+        mensaje = f"Tus ingresos totales del año pasado fueron de {currency(total_ingresos)}, lo cual no supera el valor establecido para declarar renta. ¡Sigues sin tener que declarar renta!"
+        
+    # Comparación de gastos con mismo día mes anterior 
+    today = datetime.now()
+    current_month_start = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    last_month_start = current_month_start - relativedelta(months=1)
+    last_month_end = current_month_start - relativedelta(days=1)
 
-    return render(request, 'control_finanzas/mensajes-alertas.html', {"expenses": expenses, "mensaje": mensaje})
+    current_expenses = [e for e in expenses if last_month_end < datetime.strptime(e.date, '%Y-%m-%d') <= today]
+    past_expenses = [e for e in expenses if last_month_start <= datetime.strptime(e.date, '%Y-%m-%d') <= last_month_end]
+
+    
+    current_totals = get_total_by_category(current_expenses)
+    past_totals = get_total_by_category(past_expenses) 
+    categories = set(current_totals.keys()) | set(past_totals.keys())
+    
+    logging.info(f"current_totals: {current_totals}")
+    logging.info(f"past_totals: {past_totals}")
+    
+    for category in categories:
+        if category not in current_totals:
+            current_totals[category] = 0
+        if category not in past_totals:
+            past_totals[category] = 0
+
+    # Obtener el nombre del mes actual en español
+    month_names = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+    current_month_name = month_names[today.month - 1]
+    
+    # Calcular las diferencias de porcentaje
+    differences = {}
+    for category in categories:
+        current_total = current_totals.get(category, 0)
+        past_total = past_totals.get(category, 0)
+        if past_total == 0:
+            difference = 0
+        else:
+            difference = (current_total - past_total) / past_total * 100
+        differences[category] = difference
+    logging.info(f"differences: {differences}")
+
+    return render(request, 'control_finanzas/mensajes-alertas.html', {"expenses": expenses, "mensaje": mensaje, "mes_actual": current_month_name, "current_totals": current_totals.items(), "past_totals": past_totals, "differences": differences})
 
 
 def calcular_total_ingresos(expenses, year):

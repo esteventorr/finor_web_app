@@ -1,12 +1,53 @@
 {% extends "control_finanzas/base.html" %} {% block content %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Mensajes de Alerta</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Mensajes de Alerta</h1>
     <p>{{ mensaje }}</p>
-</body>
+    <div>
+      <h2>Alertas {{ mes_actual }}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Categoría</th>
+            <th>Total actual</th>
+            <th>Total pasado</th>
+            <th>Variación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for category, current_total in current_totals %}
+          
+              {% with past_total=past_totals|get_value:category %}
+              {% with difference=differences|get_value:category %}
+          {% if difference == 0 or difference >= 30 and category != "ingreso" %}
+            <tr>
+              <td style="text-align: left;">{{ category }}</td>
+              <td style="text-align: left;">{{ current_total|currency }}</td>
+              
+                <td style="text-align: left;">{{ past_total|currency }}</td>
+                
+                  {% if difference > 0 %}
+                    <td class="positive" style="text-align: left;">+  {{ difference|abs_value|floatformat:"2" }}%</td>
+                  {% elif difference < 0 %}
+                    <td class="negative" style="text-align: left;">-  {{ difference|abs_value|floatformat:"2" }}%</td>
+                  {% else %}
+                    <td style="text-align: center;">N / A</td>
+                  {% endif %}
+                
+              
+            </tr>
+            {% endif %}
+            {% endwith %}
+            {% endwith %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>
 {% endblock %}
