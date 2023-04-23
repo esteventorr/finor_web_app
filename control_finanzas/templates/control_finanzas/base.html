@@ -1,65 +1,67 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/styles.css' %}"
-    />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="Finor - Web App For Money Management" />
-    <title>Finor</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  </head>
-  <body>
-    <div class="app__container">
-      <header class="header">
-        <div class="header__title">
-          <a href="/" class="btn">Finor</a>
-        </div>
-      </header>
-      <main>{% block content %} {% endblock %}</main>
-    </div>
-    <script>
-      function formatCurrency() {
-        const inputField = document.getElementById("value-input");
-        let value = inputField.value;
 
-        // Elimina cualquier carácter no numérico y el punto decimal
-        value = value.replace(/[^\d.]/g, "");
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Finor - Web App For Money Management" />
+  <title>Finor</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
 
-        // Separa la parte entera y decimal
-        const parts = value.split(".");
-        let intPart = parts[0];
-        const decimalPart = parts.length > 1 ? "." + parts[1] : "";
+<body>
+  <div class="app__container">
+    <header class="header">
+      <div class="header__title">
+        <a href="/" class="btn">Finor</a>
+      </div>
+    </header>
+    <main>{% block content %} {% endblock %}</main>
+  </div>
+  <script>
+    function unformatCurrency(value) {
+      return parseFloat(value.replace(/[^0-9.-]+/g, ""));
+    }
+    function formatCurrency() {
+      const inputField = document.getElementById("value-input");
+      let value = inputField.value;
 
-        // Aplica el formato deseado a la parte entera
-        const intParts = [];
-        let count = 1;
-        while (intPart.length > 0) {
-          if (count % 2 == 1) {
-            separator = ",";
-          } else {
-            separator = "'";
-          }
-          intParts.push(intPart.slice(-3));
-          intPart = intPart.slice(0, -3);
-          if (intPart.length > 0) {
-            intParts.push(separator);
-          }
-          count += 1;
+      // Elimina cualquier carácter no numérico y el punto decimal
+      value = value.replace(/[^\d.]/g, "");
+
+      // Separa la parte entera y decimal
+      const parts = value.split(".");
+      let intPart = parts[0];
+      const decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+      // Aplica el formato deseado a la parte entera
+      const intParts = [];
+      let count = 1;
+      while (intPart.length > 0) {
+        if (count % 2 == 1) {
+          separator = ",";
+        } else {
+          separator = "'";
         }
-        const formattedIntPart = intParts.reverse().join("");
-
-        // Combina la parte entera y decimal formateadas
-        const formattedValue = formattedIntPart + decimalPart;
-
-        // Actualiza el valor del campo de entrada
-        inputField.value = formattedValue;
+        intParts.push(intPart.slice(-3));
+        intPart = intPart.slice(0, -3);
+        if (intPart.length > 0) {
+          intParts.push(separator);
+        }
+        count += 1;
       }
-    </script>
-  </body>
+      const formattedIntPart = intParts.reverse().join("");
+
+      // Combina la parte entera y decimal formateadas
+      const formattedValue = formattedIntPart + decimalPart;
+
+      // Actualiza el valor del campo de entrada
+      inputField.value = formattedValue;
+    }
+  </script>
+</body>
+
 </html>
