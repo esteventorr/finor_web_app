@@ -7,9 +7,20 @@
     {% with max_month=max_month_by_category|get_item:category max_day=max_day_by_category|get_item:category %}
       <div class="ranking__card">
         <h5>🏆 {{ category }} 🏆</h5>
-        <p class="expense-value">Valor total: ${{ category_data|floatformat:2 }}</p>
-        <p class="expense-value">Mes con mayor gasto: {{ max_month }}</p>
-        <p class="expense-value">Día con mayor gasto: {{ max_day }}</p>
+        <table>
+          <tr>
+              <td class="label">Valor total:</td>
+              <td>{{ category_data|to_float|currency }}</td>
+          </tr>
+          <tr>
+              <td class="label">Mes con mayor gasto:</td>
+              <td>{{ max_month }}</td>
+          </tr>
+          <tr>
+              <td class="label">Día con mayor gasto:</td>
+              <td>{{ max_day }}</td>
+          </tr>
+        </table>
       </div>
     {% endwith %}
     {% endfor %}

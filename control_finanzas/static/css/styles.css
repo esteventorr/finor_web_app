@@ -29,6 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;
+  align-items: center;
 }
 
 .finor-form label {
@@ -54,12 +55,13 @@ body {
 .positive {
   color: red;
 }
-.negative {  
+.negative {
   color: green;
 }
 
-.positive, .negative {
-  font-family: 'Courier New', Courier, monospace;
+.positive,
+.negative {
+  font-family: "Courier New", Courier, monospace;
   font-size: large;
   font-weight: 900;
 }
@@ -179,18 +181,20 @@ body {
 
 /* Estilos para cada card */
 .ranking__card {
+  box-sizing: border-box;
+  width: 100%;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  padding: 20px;
 }
 
 .ranking__card h5 {
   background-color: black;
   color: white;
   border-radius: 5px;
-  padding: 5px;
-  margin-bottom: 10px;
+  padding: 10px;
+  text-align: center;
+  margin: 0px;
 }
 
 .ranking__card ol li {
@@ -199,6 +203,77 @@ body {
 
 .ranking__card ul li {
   font-weight: bold;
+}
+
+.ranking__card table { 
+  border-collapse: collapse; /* Combina los bordes de las celdas adyacentes */
+  display: table; 
+  white-space: inherit;
+}
+
+.ranking__card tbody {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc; 
+}
+
+.ranking__card td.label {
+  font-weight: bold;
+  font-size: 0.75em;
+  width: 38%;
+}
+
+.ranking__card td {
+  text-align: left;
+  padding-left: 10px; /* Aplica padding a la izquierda */
+  padding-top: 5px; /* Aplica padding en la parte superior */
+  padding-bottom: 5px; /* Aplica padding en la parte inferior */
+  font-size: 0.85em;
+}
+
+.currency-input-container {
+  position: relative;
+  display: inline-block;
+}
+
+.input-cop-container {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 80%;
+  height: 44px;
+}
+
+#value-input {
+  border: none;
+  padding: 6px 12px;
+  outline: none;
+  flex-grow: 1;
+}
+
+.cop-label {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-left: 1px solid #ccc;
+  padding: 6px 12px;
+  color: #495057;
+  font-weight: bold;
+  border-radius: 0 20px 20px 0;
+}
+
+#value-input:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+#value-input:focus + .cop-label {
+  border-color: #80bdff;
+}
+
+div.in-progress {
+  padding: 20px;
+  text-align: center;
 }
 
 table {
@@ -222,6 +297,15 @@ table tr:hover {
 }
 table td {
   text-align: center;
+}
+
+table tbody td {
+  text-align: left;
+  padding: 0px 20px;
+}
+
+table tbody td p {
+  margin: 5px 0px;
 }
 
 @media screen and (max-width: 768px) {

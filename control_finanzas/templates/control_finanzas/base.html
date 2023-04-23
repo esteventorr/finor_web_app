@@ -21,9 +21,45 @@
           <a href="/" class="btn">Finor</a>
         </div>
       </header>
-      <main> 
-        {% block content %} {% endblock %}
-      </main>
+      <main>{% block content %} {% endblock %}</main>
     </div>
+    <script>
+      function formatCurrency() {
+        const inputField = document.getElementById("value-input");
+        let value = inputField.value;
+
+        // Elimina cualquier carácter no numérico y el punto decimal
+        value = value.replace(/[^\d.]/g, "");
+
+        // Separa la parte entera y decimal
+        const parts = value.split(".");
+        let intPart = parts[0];
+        const decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+        // Aplica el formato deseado a la parte entera
+        const intParts = [];
+        let count = 1;
+        while (intPart.length > 0) {
+          if (count % 2 == 1) {
+            separator = ",";
+          } else {
+            separator = "'";
+          }
+          intParts.push(intPart.slice(-3));
+          intPart = intPart.slice(0, -3);
+          if (intPart.length > 0) {
+            intParts.push(separator);
+          }
+          count += 1;
+        }
+        const formattedIntPart = intParts.reverse().join("");
+
+        // Combina la parte entera y decimal formateadas
+        const formattedValue = formattedIntPart + decimalPart;
+
+        // Actualiza el valor del campo de entrada
+        inputField.value = formattedValue;
+      }
+    </script>
   </body>
 </html>
