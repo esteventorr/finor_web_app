@@ -1,96 +1,79 @@
-<div> 
+<div>
+  <div class="in-progress">
+    <h2>⚠️-Página en Destrucción-⚠️ 👿...</h2>
+    <div class="mensaje">
+      <p>Estamos trabajando para mejorar tu experiencia en Control Finanzas.</p>
+      <p>Pronto calendario será integrado a "Metas y Ahorros", en ésta pantalla se ven metas del mes actual y no es posible crear Metas desde aquí.</p>
+    </div>
+  </div>
+  <button onclick="openModal()">➕</button>
+  <div id="miModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Nueva Meta</h3>
+      <form id="reminderForm" data-url="{% url 'create_reminder' %}">
+        {% csrf_token %}
+        <div class="form__field">
+          <label for="name">Titulo:</label>
+          <input type="text" name="name" required />
+        </div>
+        <div class="form__field">
+          <label for="set_date">Fecha de inicio:</label>
+          <input type="date" name="set_date" required />
+        </div>
+        <div class="form__field">
+          <label for="target_date">Fecha Final:</label>
+          <input type="date" name="target_date" required />
+        </div>
+        <div class="form__field">
+          <label for="description">Descripción:</label>
+          <input type="text" name="description" required />
+        </div>
+        <button id="submitBtn" type="submit" disabled>Guardar</button>
+        <div id="message"></div>
+      </form>
+    </div>
+  </div>
+  <script>
+    function openModal() {
+      document.getElementById("miModal").style.display = "block";
+    }
+    function closeModal() {
+      document.getElementById("miModal").style.display = "none";
+    }
+  </script>
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
 
-	<h2>Ejemplo Modal con Formulario</h2>
-
-	<!-- Botón para abrir el modal -->
-	<button onclick="openModal()">➕ agregar nuevo evento</button>
-
-	<!-- Modal -->
-	<div id="miModal" class="modal">
-		<!-- Contenido del modal -->
-		<div class="modal-content">
-			<!-- Botón de cerrar -->
-			<span class="close" onclick="closeModal()">&times;</span>
-			<h3>Formulario</h3>
-			<!-- Formulario -->
-			<form id="reminderForm" data-url="{% url 'create_reminder' %}">
-                {% csrf_token %} 
-                <div class="form__field">
-                    <label for="name">Titulo:</label>
-                    <input type="text" name="name" required />
-                </div>
-				<div class="form__field">
-                    <label for="set_date">Fecha de inicio:</label>
-                    <input type="date" name="set_date" required />
-                </div>
-				<div class="form__field">
-                    <label for="target_date">Fecha Final:</label>
-                    <input type="date" name="target_date" required />
-                </div>
-                <div class="form__field">
-                    <label for="description">Descripción:</label>
-                    <input type="text" name="description" required />
-                </div>
-				
-				<button id="submitBtn" type="submit">Guardar</button> 
-  
-                <div id="message"></div> 
-			</form>
-		</div>
-	</div>
-
-	<script>
-		// Función para abrir el modal
-		function openModal() {
-			document.getElementById("miModal").style.display = "block";
-		}
-
-		// Función para cerrar el modal
-		function closeModal() {
-			document.getElementById("miModal").style.display = "none";
-		}
-	</script>
-
-    <style>
-        /* Estilos para el modal */
-        .modal {
-            display: none; /* Ocultar el modal por defecto */
-            position: fixed; /* Posicionamiento fijo */
-            z-index: 1; /* Ubicar el modal por encima de todo el contenido */
-            left: 0;
-            top: 0;
-            width: 100%; /* Ancho completo */
-            height: 100%; /* Altura completa */
-            overflow: auto; /* Permitir scroll si el contenido es demasiado grande */
-            background-color: rgba(0,0,0,0.4); /* Fondo oscuro */
-        }
-
-        /* Estilos para el contenido del modal */
-        .modal-content {
-            background-color: #fefefe; /* Fondo del contenido */
-            margin: 10% auto; /* Margen superior e inferior, centrado horizontalmente */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Ancho del contenido */
-        }
-
-        /* Estilos para el botón de cerrar */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-
-    {% load static %} 
-  
-    <script src="{% static 'js/create_reminder.js' %}" defer></script> 
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+  {% load static %}
+  <script src="{% static 'js/create_reminder.js' %}" defer></script>
 </div>

@@ -1,3 +1,4 @@
+{% load custom_filters %}
 <table class="finor-table">
   <thead>
     <tr>
@@ -14,7 +15,7 @@
         <p>{{ goal.name }}</p>
       </td>
       <td>
-        <p>$ {{ goal.value|floatformat:2 }}</p>
+        <p>{{ goal.value|to_float|currency }}</p>
       </td>
       <td>
         <p>{{ goal.description }}</p>

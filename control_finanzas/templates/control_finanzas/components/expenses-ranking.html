@@ -1,20 +1,20 @@
 {% block content %}
+{% load custom_filters %}
 <div class="ranking">
   <h4 class="title">Ranking de gastos</h4>
   <div class="ranking__cards-container">
     {% for category, top_expenses in rankings %}
     <div class="ranking__card">
       <h5>🏆 {{ category }} 🏆</h5>
-      <ul>
-        {% for expense in top_expenses %}
-        <li>
-          <b class="expense-position">{{ forloop.counter }}.</b>
-          <p class="expense-value">$ {{ expense.value|floatformat:2 }}</p>
-          <p class="expense-description">{{ expense.description }}</p>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
+      <table>
+          {% for expense in top_expenses %}
+          <tr>
+              <td class="label expense-description"><b class="expense-position">{{ forloop.counter }}.</b> {{ expense.description }}</td>
+              <td class="expense-value">{{ expense.value|to_float|currency }}</td>
+          </tr>
+          {% endfor %}
+      </table>
+  </div>
     {% endfor %}
   </div>
 </div>

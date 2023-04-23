@@ -4,7 +4,16 @@
     {% csrf_token %}
     <div class="form__field">
       <label for="value">Valor:</label>
-      <input type="number" name="value" required />
+      <div class="input-cop-container">
+        <input
+          id="value-input"
+          oninput="formatCurrency()"
+          type="text"
+          name="value"
+          required
+        />
+        <span class="cop-label">COP</span>
+      </div>
     </div>
     <div class="form__field">
       <label for="description">Descripción:</label>

@@ -66,3 +66,10 @@ def currency(number, symbol='$', grouping=True):
 
     # Agregar el símbolo de moneda y el código al principio y al final, respectivamente
     return f"{symbol} {formatted_number} COP"
+  
+@register.filter(name='to_float')
+def to_float(value):
+    try:
+        return float(value)
+    except ValueError:
+        return 0.0

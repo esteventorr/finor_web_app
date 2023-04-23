@@ -1,44 +1,53 @@
 <div class="finor-form">
-    <h1>Ingresa un nuevo objetivo</h1>
-    <form id="goalForm" data-url="{% url 'create_goal' %}">
-      {% csrf_token %}
-  
-      <div class="form__field">
-        <label for="name">Nombre:</label>
-        <input type="text" name="name" required />
+  <h1>Ingresa un nuevo objetivo</h1>
+  <form id="goalForm" data-url="{% url 'create_goal' %}">
+    {% csrf_token %}
+    <div class="form__field">
+      <label for="value">Valor:</label>
+      <div class="input-cop-container">
+        <input
+          id="value-input"
+          oninput="formatCurrency()"
+          type="text"
+          name="value"
+          required
+        />
+        <span class="cop-label">COP</span>
       </div>
-      <div class="form__field">
-        <label for="set_date">Fecha de inicio:</label>
-        <input type="date" name="set_date" required />
-      </div>
-      <div class="form__field">
-        <label for="enable_target_date">Habilitar fecha límite:</label>
-        <input type="checkbox" name="enable_target_date" />
-      </div>
-      <div class="form__field">
-        <label for="target_date">Fecha límite:</label>
-        <input type="date" name="target_date" required />
-      </div>
-      <div class="form__field">
-        <label for="value">Valor:</label>
-        <input type="number" name="value" required />
-      </div>
-      <div class="form__field">
-        <label for="description">Descripción:</label>
-        <input type="text" name="description" required />
-      </div>
-      <div class="form__field">
-        <label for="category">Categoría:</label>
-        <select id="category" name="category" required>
-          <option value="empresa">Empresa</option>
-          <option value="hogar">Hogar</option>
-          <option value="educacion">Educación</option>
-          <option value="entretenimiento">Entretenimiento</option>
-        </select>
-      </div>
-      <button id="submitBtn" type="submit">Guardar</button>
-      <div id="message"></div>
-    </form>
-    {% load static %}
-    <script src="{% static 'js/create_goal.js' %}" defer></script>
-  </div>
+    </div>
+    <div class="form__field">
+      <label for="name">Nombre:</label>
+      <input type="text" name="name" required />
+    </div>
+    <div class="form__field">
+      <label for="set_date">Fecha de inicio:</label>
+      <input type="date" name="set_date" required />
+    </div>
+    <div class="form__field">
+      <label for="enable_target_date">Habilitar fecha límite:</label>
+      <input type="checkbox" name="enable_target_date" />
+    </div>
+    <div class="form__field">
+      <label for="target_date">Fecha límite:</label>
+      <input type="date" name="target_date" required />
+    </div>
+
+    <div class="form__field">
+      <label for="description">Descripción:</label>
+      <input type="text" name="description" required />
+    </div>
+    <div class="form__field">
+      <label for="category">Categoría:</label>
+      <select id="category" name="category" required>
+        <option value="empresa">Empresa</option>
+        <option value="hogar">Hogar</option>
+        <option value="educacion">Educación</option>
+        <option value="entretenimiento">Entretenimiento</option>
+      </select>
+    </div>
+    <button id="submitBtn" type="submit">Guardar</button>
+    <div id="message"></div>
+  </form>
+  {% load static %}
+  <script src="{% static 'js/create_goal.js' %}" defer></script>
+</div>
