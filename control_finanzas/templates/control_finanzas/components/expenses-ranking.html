@@ -1,68 +1,21 @@
-<!--<div>
-    <h4 class="title">⚠️ - Tiempo de Análisis - ⚠️</h4>
-    <div class="form__field">
-      <label for="months-quantity">Meses:</label>
-      <select id="categoria" name="months-quantity" required>
-        <option>1</option>
-        <option>3</option>
-        <option>4</option>
-        <option>6</option>
-      </select>
-    </div>
-  </div>
-  <div id="rankings" class="ranking">
-    <h4 class="title">⚠️ - Rankings Gastos Por Categoría - ⚠️</h4>
-    <div class="ranking__cards-container">
-      <div class="ranking__card top_empresa">
-        <h5>Empresa</h5>
-        <ul>
-          <li><b>1.</b> Nomina</li>
-          <li><b>2.</b> Peajes</li>
-          <li><b>3.</b> Caja Menor</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_hogar">
-        <h5>Hogar</h5>
-        <ul>
-          <li><b>1.</b> Alquiler</li>
-          <li><b>2.</b> Mercado</li>
-          <li><b>3.</b> Servicios EPM</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_educacion">
-        <h5>Educación</h5>
-        <ul>
-          <li><b>1.</b> Matricula EAFIT</li>
-          <li><b>2.</b> Libros Maestría</li>
-          <li><b>3.</b> Curso Física En Hardvard</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_entretenimiento">
-        <h5>Entretenimiento</h5>
-        <ul>
-          <li><b>1.</b> PS Plus Deluxe</li>
-          <li><b>2.</b> DTV GO</li>
-          <li><b>3.</b> HBO Max</li>
-        </ul>
-      </div>
-    </div>
-  </div>-->
-  {% block content %}
-  {% for category, top_expenses in rankings %}
-    <div class="ranking-categoria">
-        <h4>🏆 {{ category }} 🏆</h4>
-        <ul>
+{% block content %}
+<div class="ranking">
+  <h4 class="title">Ranking de gastos</h4>
+  <div class="ranking__cards-container">
+    {% for category, top_expenses in rankings %}
+    <div class="ranking__card">
+      <h5>🏆 {{ category }} 🏆</h5>
+      <ul>
         {% for expense in top_expenses %}
-            <li>
-                <p class="expense-value">$ {{ expense.value|floatformat:2 }}</p>
-                <p class="expense-description">{{ expense.description }}</p>
-            </li>
+        <li>
+          <b class="expense-position">{{ forloop.counter }}.</b>
+          <p class="expense-value">$ {{ expense.value|floatformat:2 }}</p>
+          <p class="expense-description">{{ expense.description }}</p>
+        </li>
         {% endfor %}
-        </ul>
+      </ul>
     </div>
     {% endfor %}
-  {% endblock %}
-  
+  </div>
+</div>
+{% endblock %}

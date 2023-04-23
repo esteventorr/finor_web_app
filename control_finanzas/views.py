@@ -1,4 +1,3 @@
-from datetime import datetime
 import logging
 import os
 import time
@@ -11,6 +10,8 @@ from .api import POST_goal, GET_goals, GET_expenses, POST_expense, GET_reminders
 
 from itertools import groupby
 from operator import itemgetter
+from datetime import datetime, timedelta
+from collections import defaultdict
 from PIL import Image
 from io import BytesIO
 from django.core.files.images import ImageFile
@@ -52,6 +53,7 @@ def process_image(image):
     except Exception as e:
         logging.error(f"Error al procesar la imagen: {e}")
         raise e
+
 
 
 def main_menu(request):
@@ -99,20 +101,80 @@ def analisis_gastos(request):
     expenses = GET_expenses()
     rankings = []
     if expenses:
-        # Obtener los gastos agrupados por categoría
-        expenses_by_category = {k: list(g) for k, g in groupby(
-            expenses, key=lambda x: x.category)}
+        # Agrupar gastos por categoría
+        expenses_by_category = defaultdict(list)
+        for expense in expenses:
+            expenses_by_category[expense.category].append(expense)
+
         # Calcular el ranking de los 3 mayores gastos por categoría
         for category, category_expenses in expenses_by_category.items():
-            top_expenses = sorted(
-                category_expenses, key=lambda x: x.value, reverse=True)[:3]
+            top_expenses = sorted(category_expenses, key=lambda x: float(x.value), reverse=True)[:3]
             rankings.append((category, top_expenses))
+
+        # Calcular el total de gastos de los últimos 12 meses por categoría
+        expenses_last_12_months_by_category = defaultdict(int)
+        today = datetime.today()
+        last_12_months = today - timedelta(days=365)
+        for expense in expenses:
+            if datetime.strptime(expense.date, '%Y-%m-%d') >= last_12_months:
+                expenses_last_12_months_by_category[expense.category] += int(expense.value)
+
+        # Calcular el mes con el mayor gasto total en los últimos 12 meses por categoría
+        expenses_last_12_months_by_category_month = defaultdict(lambda: defaultdict(int))
+        for expense in expenses:
+            expense_date = datetime.strptime(expense.date, '%Y-%m-%d')
+            if expense_date >= last_12_months:
+                month_year = expense_date.strftime('%m-%Y')
+                expenses_last_12_months_by_category_month[expense.category][month_year] += int(expense.value)
+
+        max_month_by_category = {}
+        for category, month_totals in expenses_last_12_months_by_category_month.items():
+            max_month = None
+            max_month_total = 0
+            for month, total in month_totals.items():
+                if total > max_month_total:
+                    max_month_total = total
+                    max_month = month
+            max_month_by_category[category] = max_month
+
+        # Calcular el día con el mayor gasto total en los últimos 12 meses por categoría
+        expenses_last_12_months_by_category_day = defaultdict(lambda: defaultdict(int))
+        for expense in expenses:
+            expense_date = datetime.strptime(expense.date, '%Y-%m-%d')
+            if expense_date >= last_12_months:
+                day = expense_date.strftime('%d-%m-%Y')
+                expenses_last_12_months_by_category_day[expense.category][day] += int(expense.value)
+
+        max_day_by_category = {}
+        for category, day_totals in expenses_last_12_months_by_category_day.items():
+            max_day = None
+            max_day_total = 0
+            for day, total in day_totals.items():
+                if total > max_day_total:
+                    max_day_total = total
+                    max_day = day
+            max_day_by_category[category] = max_day
+
         mensaje = "Transacción creada con éxito."
     else:
         mensaje = "Error al crear la transacción."
-    logging.info(mensaje)
-    logging.info(f"Rankings: {rankings}")
-    return render(request, 'control_finanzas/analisis-gastos.html', {'mensaje': mensaje, "expenses": expenses, "rankings": rankings})
+    logging.info("aqui estoy-------------------")
+    logging.info(expenses_last_12_months_by_category)
+    logging.info(max_month_by_category)
+    logging.info(max_day_by_category)
+    return render(request, 'control_finanzas/analisis-gastos.html', {
+        'mensaje': mensaje,
+        "expenses": expenses,
+        "rankings": rankings,
+        'expenses_last_12_months_by_category': dict(expenses_last_12_months_by_category),
+        'max_month_by_category': max_month_by_category,
+        'max_day_by_category': max_day_by_category
+    })
+
+
+
+
+
 
 
 @csrf_exempt
