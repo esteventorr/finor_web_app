@@ -1,0 +1,28 @@
+<table class="finor-table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Valor</th>
+      <th>Descripción</th>
+      <th>Categoría</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for goal in goals %}
+    <tr>
+      <td>
+        <p>{{ goal.name }}</p>
+      </td>
+      <td>
+        <p>$ {{ goal.value|floatformat:2 }}</p>
+      </td>
+      <td>
+        <p>{{ goal.description }}</p>
+      </td>
+      <td>
+        <p>{{ goal.category }}</p>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
