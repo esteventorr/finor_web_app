@@ -163,6 +163,10 @@ body {
   color: #fff;
 }
 
+#tabla-transacciones {
+  display: none;
+}
+
 .ranking {
   display: flex;
   flex-direction: column;

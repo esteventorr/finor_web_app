@@ -8,8 +8,18 @@
     <button>
       <a href="#rankings">Rankings</a>
     </button>
-    <div class="tabla-transacciones">
+    <button>
+      <a href="#graph" id="boton-grafico">Graph</a>
+    </button>
+    <button>
+      <a href="#graph" id="boton-gastos">Expenses</a>
+    </button>
+    <div class="tabla-transacciones" id="tabla-transacciones">
       {% include "control_finanzas/components/expenses-table.html" %}
+    </div>
+
+    <div class="grafico-transacciones">
+      {% include "control_finanzas/components/expenses-graph.html" %}
     </div>
 
     <div id = "rankings" class = "ranking-gastos">
@@ -20,4 +30,20 @@
       {% include "control_finanzas/components/summarybox.html" %}
     </div>
   </div>
+  <script>
+    const botonGastos = document.querySelector('#boton-gastos');
+    const botonGrafico = document.querySelector('#boton-grafico');
+    const tablaTransacciones = document.querySelector('#tabla-transacciones');
+    const graficoTransacciones = document.querySelector('.grafico-transacciones');
+  
+    botonGrafico.addEventListener('click', () => {
+      tablaTransacciones.style.display = 'none';
+      graficoTransacciones.style.display = 'block';
+    });
+
+    botonGastos.addEventListener('click', () => {
+      tablaTransacciones.style.display = 'block';
+      graficoTransacciones.style.display = 'none';
+    });
+  </script>
 {% endblock %}
