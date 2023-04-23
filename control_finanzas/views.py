@@ -18,7 +18,8 @@ from django.core.files.images import ImageFile
 from django.core.files import File
 from django.core.files.storage import default_storage
 from django.conf import settings
-
+import json
+import matplotlib.pyplot as plt
 def process_image(image):
     try:
         logging.info(f"Procesando imagen {image}")
@@ -155,16 +156,23 @@ def analisis_gastos(request):
                     max_day = day
             max_day_by_category[category] = max_day
 
+
+        # Obtener los datos de gastos por categoría
+        expenses_by_category_graph = dict(expenses_last_12_months_by_category)
+        categories_graph = list(expenses_by_category_graph.keys())
+        expenses_graph = list(expenses_by_category_graph.values())
+
+        # Crear un gráfico de torta
+        fig, ax = plt.subplots()
+        ax.pie(expenses_graph, labels=categories_graph, autopct='%1.1f%%')
+        ax.set_title('Gastos por categoría')
+        fig.set_size_inches(2, 2)
+        expenses_by_category_json = json.dumps(expenses_by_category_graph)
+
+
         mensaje = "Transacción creada con éxito."
     else:
         mensaje = "Error al crear la transacción."
-    logging.info("aqui estoy-------------------")
-    logging.info(expenses_last_12_months_by_category)
-    logging.info(expenses_last_12_months_by_category['entretenimiento'])
-    logging.info(expenses_last_12_months_by_category['empresa'])
-    logging.info(expenses_last_12_months_by_category['ingreso'])
-    logging.info(max_month_by_category)
-    logging.info(max_day_by_category)
 
     return render(request, 'control_finanzas/analisis-gastos.html', {
         'mensaje': mensaje,
@@ -172,7 +180,8 @@ def analisis_gastos(request):
         "rankings": rankings,
         'expenses_by_category': dict(expenses_last_12_months_by_category),
         'max_month_by_category': max_month_by_category,
-        'max_day_by_category': max_day_by_category
+        'max_day_by_category': max_day_by_category,
+        'expenses_by_category_json': expenses_by_category_json
     })
 
 @csrf_exempt
