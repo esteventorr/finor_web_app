@@ -51,6 +51,19 @@ body {
   color: green;
 }
 
+.positive {
+  color: red;
+}
+.negative {  
+  color: green;
+}
+
+.positive, .negative {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+  font-weight: 900;
+}
+
 .finor-form button,
 .analisis-gastos button {
   padding: 10px;
