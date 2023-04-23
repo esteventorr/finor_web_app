@@ -160,22 +160,20 @@ def analisis_gastos(request):
         mensaje = "Error al crear la transacción."
     logging.info("aqui estoy-------------------")
     logging.info(expenses_last_12_months_by_category)
+    logging.info(expenses_last_12_months_by_category['entretenimiento'])
+    logging.info(expenses_last_12_months_by_category['empresa'])
+    logging.info(expenses_last_12_months_by_category['ingreso'])
     logging.info(max_month_by_category)
     logging.info(max_day_by_category)
+
     return render(request, 'control_finanzas/analisis-gastos.html', {
         'mensaje': mensaje,
         "expenses": expenses,
         "rankings": rankings,
-        'expenses_last_12_months_by_category': dict(expenses_last_12_months_by_category),
+        'expenses_by_category': dict(expenses_last_12_months_by_category),
         'max_month_by_category': max_month_by_category,
         'max_day_by_category': max_day_by_category
     })
-
-
-
-
-
-
 
 @csrf_exempt
 def create_expense(request):
