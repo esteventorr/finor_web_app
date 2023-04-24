@@ -1,0 +1,21 @@
+{% block content %}
+{% load custom_filters %}
+<div class="ranking">
+  <h4 class="title">Ranking de gastos</h4>
+  <div class="ranking__cards-container">
+    {% for category, top_expenses in rankings %}
+    <div class="ranking__card">
+      <h5>🏆 {{ category }} 🏆</h5>
+      <table>
+          {% for expense in top_expenses %}
+          <tr>
+              <td class="label expense-description"><b class="expense-position">{{ forloop.counter }}.</b> {{ expense.description }}</td>
+              <td class="expense-value">{{ expense.value|to_float|currency }}</td>
+          </tr>
+          {% endfor %}
+      </table>
+  </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

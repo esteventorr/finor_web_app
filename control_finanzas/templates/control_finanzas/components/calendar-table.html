@@ -2,26 +2,26 @@
 <table class="finor-table">
   <thead>
     <tr>
+      <th>Nombre</th>
       <th>Valor</th>
       <th>Descripción</th>
       <th>Categoría</th>
-      <th>Imagen</th>
     </tr>
   </thead>
   <tbody>
-    {% for expense in expenses %}
+    {% for goal in goals %}
     <tr>
       <td>
-        <p>{{ expense.value|to_float|currency}}</p>
+        <p>{{ goal.name }}</p>
       </td>
       <td>
-        <p>{{ expense.description }}</p>
+        <p>{{ goal.value|to_float|currency }}</p>
       </td>
       <td>
-        <p>{{ expense.category }}</p>
+        <p>{{ goal.description }}</p>
       </td>
       <td>
-        <img src="{{ expense.photo }}" alt="expense image" width="100" />
+        <p>{{ goal.category }}</p>
       </td>
     </tr>
     {% endfor %}

@@ -1,4 +1,4 @@
-/*Global Styles*/
+
 body,
 html {
   margin: 0;
@@ -29,6 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;
+  align-items: center;
 }
 
 .finor-form label {
@@ -42,6 +43,27 @@ body {
   border: 1px solid #ccc;
   border-radius: 100px;
   font-size: 1.2rem;
+}
+
+.finor-form .form__field select option[data-type="Gasto"] {
+  color: red;
+}
+.finor-form .form__field select option[data-type="No Gasto"] {
+  color: green;
+}
+
+.positive {
+  color: red;
+}
+.negative {
+  color: green;
+}
+
+.positive,
+.negative {
+  font-family: "Courier New", Courier, monospace;
+  font-size: large;
+  font-weight: 900;
 }
 
 .finor-form button,
@@ -132,8 +154,8 @@ body {
 }
 
 .analisis-gastos button {
-  margin: 10px auto; 
-  margin-top: 0px; 
+  margin: 10px auto;
+  margin-top: 0px;
 }
 
 .analisis-gastos button a {
@@ -141,11 +163,15 @@ body {
   color: #fff;
 }
 
+#tabla-transacciones {
+  display: none;
+}
+
 .ranking {
   display: flex;
   flex-direction: column;
   margin: 20px;
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
   padding: 20px;
 }
@@ -157,20 +183,21 @@ body {
   margin: 20px;
 }
 
-/* Estilos para cada card */
 .ranking__card {
+  box-sizing: border-box;
+  width: 100%;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); 
-  padding: 20px; 
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .ranking__card h5 {
   background-color: black;
   color: white;
   border-radius: 5px;
-  padding: 5px;
-  margin-bottom: 10px;
+  padding: 10px;
+  text-align: center;
+  margin: 0px;
 }
 
 .ranking__card ol li {
@@ -179,6 +206,77 @@ body {
 
 .ranking__card ul li {
   font-weight: bold;
+}
+
+.ranking__card table { 
+  border-collapse: collapse; 
+  display: table; 
+  white-space: inherit;
+}
+
+.ranking__card tbody {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc; 
+}
+
+.ranking__card td.label {
+  font-weight: bold;
+  font-size: 0.75em;
+  width: 38%;
+}
+
+.ranking__card td {
+  text-align: left;
+  padding-left: 10px; 
+  padding-top: 5px; 
+  padding-bottom: 5px; 
+  font-size: 0.85em;
+}
+
+.currency-input-container {
+  position: relative;
+  display: inline-block;
+}
+
+.input-cop-container {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 80%;
+  height: 44px;
+}
+
+#value-input {
+  border: none;
+  padding: 6px 12px;
+  outline: none;
+  flex-grow: 1;
+}
+
+.cop-label {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-left: 1px solid #ccc;
+  padding: 6px 12px;
+  color: #495057;
+  font-weight: bold;
+  border-radius: 0 20px 20px 0;
+}
+
+#value-input:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+#value-input:focus + .cop-label {
+  border-color: #80bdff;
+}
+
+div.in-progress {
+  padding: 20px;
+  text-align: center;
 }
 
 table {
@@ -204,20 +302,30 @@ table td {
   text-align: center;
 }
 
+table tbody td {
+  text-align: left;
+  padding: 0px 20px;
+}
+
+table tbody td p {
+  margin: 5px 0px;
+}
+
 @media screen and (max-width: 768px) {
   .app__container {
     width: 100%;
     max-width: auto;
     min-height: 100vh;
   }
-  .finor-form .form__field input, .finor-form .form__field select {
+  .finor-form .form__field input,
+  .finor-form .form__field select {
     width: 80%;
     margin: auto;
   }
 
   .finor-form {
     margin-top: 40px;
-  } 
+  }
 
   .ranking__cards-container {
     grid-template-columns: 1fr;
@@ -225,7 +333,7 @@ table td {
   .app__container .ranking h4.title {
     padding: 5px;
   }
-  
+
   table {
     display: block;
     overflow-x: auto;

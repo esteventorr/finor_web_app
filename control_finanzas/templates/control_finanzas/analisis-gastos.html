@@ -1,104 +1,46 @@
 {% extends "control_finanzas/base.html" %} {% block content %}
-<div class="analisis-gastos">
-  <h3 class="title">▶️ Análisis Gastos 🤖</h3>
-  <h4 class="title">📅 Movimientos del último mes 🏦</h4>
-  <button>
-    <a href="/crear-gastos/">Agregar Gasto</a></button>
-  <div class="tabla-transacciones">
-    {% include "control_finanzas/components/expenses-table.html" %}
-  </div>
+  <div class="analisis-gastos">
+    <h3 class="title">▶️ Análisis Gastos 🤖</h3>
+    <h4 class="title">📅 Movimientos del último mes 🏦</h4>
+    <button>
+      <a href="/crear-gastos/">Agregar Gasto</a>
+    </button>
+    <button>
+      <a href="#rankings">Rankings</a>
+    </button>
+    <button id="boton-grafico">Graph</button>
+    <button id="boton-gastos">Expenses</button>
+    
+    <div class="tabla-transacciones" id="tabla-transacciones">
+      {% include "control_finanzas/components/expenses-table.html" %}
+    </div>
 
-  <div>
-    <h4 class="title">⚠️ - Tiempo de Análisis - ⚠️</h4>
-    <div class="form__field">
-      <label for="months-quantity">Meses:</label>
-      <select id="categoria" name="months-quantity" required>
-        <option value="empresa">1</option>
-        <option value="hogar">3</option>
-        <option value="educacion">4</option>
-        <option value="entretenimiento">6</option>
-      </select>
+    <div class="grafico-transacciones">
+      {% include "control_finanzas/components/expenses-graph.html" %}
+    </div>
+
+    <div id = "rankings" class = "ranking-gastos">
+      {% include "control_finanzas/components/expenses-ranking.html" %}
+    </div>
+    
+    <div class = "summary-gastos">
+      {% include "control_finanzas/components/summarybox.html" %}
     </div>
   </div>
-  <div class="ranking">
-    <h4 class="title">⚠️ - Rankings Gastos Por Categoría - ⚠️</h4>
-    <div class="ranking__cards-container">
-      <div class="ranking__card top_empresa">
-        <h5>Empresa</h5>
-        <ul>
-          <li><b>1.</b> Nomina</li>
-          <li><b>2.</b> Peajes</li>
-          <li><b>3.</b> Caja Menor</li>
-        </ul>
-      </div>
+  <script>
+    const botonGastos = document.querySelector('#boton-gastos');
+    const botonGrafico = document.querySelector('#boton-grafico');
+    const tablaTransacciones = document.querySelector('#tabla-transacciones');
+    const graficoTransacciones = document.querySelector('.grafico-transacciones');
+  
+    botonGrafico.addEventListener('click', () => {
+      tablaTransacciones.style.display = 'none';
+      graficoTransacciones.style.display = 'block';
+    });
 
-      <div class="ranking__card top_hogar">
-        <h5>Hogar</h5>
-        <ul>
-          <li><b>1.</b> Alquiler</li>
-          <li><b>2.</b> Mercado</li>
-          <li><b>3.</b> Servicios EPM</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_educacion">
-        <h5>Educación</h5>
-        <ul>
-          <li><b>1.</b> Matricula EAFIT</li>
-          <li><b>2.</b> Libros Maestría</li>
-          <li><b>3.</b> Curso Física En Hardvard</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_entretenimiento">
-        <h5>Entretenimiento</h5>
-        <ul>
-          <li><b>1.</b> PS Plus Deluxe</li>
-          <li><b>2.</b> DTV GO</li>
-          <li><b>3.</b> HBO Max</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="ranking">
-    <h4 class="title">⚠️ - Resumen de gastos últimos 12 meses - ⚠️</h4>
-    <div class="ranking__cards-container">
-      <div class="ranking__card top_empresa">
-        <h5>Empresa</h5>
-        <ul>
-          <li>Valor Total: 50,434,200 COP</li>
-          <li>Mes Más Caro: Enero</li>
-          <li>Día Más Caro: 30 Junio</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_hogar">
-        <h5>Hogar</h5>
-        <ul>
-          <li>Valor Total: 30,211,900 COP</li>
-          <li>Mes Más Caro: Diciembre</li>
-          <li>Día Más Caro: 24 Diciembre</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_educacion">
-        <h5>Educación</h5>
-        <ul>
-          <li>Valor Total: 12,034,100 COP</li>
-          <li>Mes Más Caro: Enero</li>
-          <li>Día Más Caro: 30 Noviembre</li>
-        </ul>
-      </div>
-
-      <div class="ranking__card top_entretenimiento">
-        <h5>Entretenimiento</h5>
-        <ul>
-          <li>Valor Total: 8,301,550 COP</li>
-          <li>Mes Más Caro: Diciembre</li>
-          <li>Día Más Caro: 14 Julio</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+    botonGastos.addEventListener('click', () => {
+      tablaTransacciones.style.display = 'block';
+      graficoTransacciones.style.display = 'none';
+    });
+  </script>
 {% endblock %}

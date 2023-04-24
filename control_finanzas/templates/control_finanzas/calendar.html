@@ -1,0 +1,25 @@
+{% extends "control_finanzas/base.html" %} {% block content %}
+<div class="registro registro-objetivos">
+  <h3 class="title">▶️ Calendar 🏁</h3> 
+</div>
+<div class="add-event">
+    <div id="modal-event-form">
+        {% include "control_finanzas/components/modal-calendar-form.html" %}
+    </div>
+</div>
+
+<div class="registro registro-objetivos">
+  </div>
+  <div class="tabla-objetivos">
+    {% include "control_finanzas/components/calendar-table.html" %}
+  </div>
+
+<script>
+    modal = document.getElementById("modal-event-form");
+
+    function add_new_event(){
+        
+
+    }
+</script>
+{% endblock %}

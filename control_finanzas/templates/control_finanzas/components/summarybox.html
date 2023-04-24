@@ -1,0 +1,29 @@
+{% load custom_filters %}
+{% block content %}
+<div class="ranking">
+  <h4 class="title">Total de gastos de los últimos 12 meses por categoría</h4>
+  <div class="ranking__cards-container">
+    {% for category, category_data in expenses_by_category.items %}
+    {% with max_month=max_month_by_category|get_item:category max_day=max_day_by_category|get_item:category %}
+      <div class="ranking__card">
+        <h5>🏆 {{ category }} 🏆</h5>
+        <table>
+          <tr>
+              <td class="label">Valor total:</td>
+              <td>{{ category_data|to_float|currency }}</td>
+          </tr>
+          <tr>
+              <td class="label">Mes con mayor gasto:</td>
+              <td>{{ max_month }}</td>
+          </tr>
+          <tr>
+              <td class="label">Día con mayor gasto:</td>
+              <td>{{ max_day }}</td>
+          </tr>
+        </table>
+      </div>
+    {% endwith %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
