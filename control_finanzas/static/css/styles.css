@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 
 body,
 html {
@@ -5,7 +8,6 @@ html {
   padding: 0;
   font-family: sans-serif;
   background-color: #fafafa;
-  box-sizing: border-box;
 }
 
 body {
@@ -17,6 +19,8 @@ body {
 .finor-form {
   padding: 40px;
   padding-top: 0px;
+  max-width: 400px;
+  margin: auto;
 }
 
 .finor-form > h1 {
@@ -43,6 +47,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 100px;
   font-size: 1.2rem;
+  width: 100%;
 }
 
 .finor-form .form__field select option[data-type="Gasto"] {
@@ -52,14 +57,14 @@ body {
   color: green;
 }
 
-.positive {
+.positive, .gasto {
   color: red;
 }
-.negative {
+.negative, .ingreso {
   color: green;
 }
 
-.positive,
+.positive, .gasto, .ingreso,
 .negative {
   font-family: "Courier New", Courier, monospace;
   font-size: large;
@@ -79,6 +84,7 @@ body {
   margin-top: 20px;
   border-radius: 100px;
   transition: all 0.2s ease-in-out;
+  width: 200px;
 }
 
 .header {
@@ -92,7 +98,7 @@ body {
 
 .header .header__title a {
   display: block;
-  padding: 20px;
+  padding: 0px;
   color: #fff;
   text-decoration: none;
   font-size: 2rem;
@@ -114,6 +120,10 @@ body {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+}
+
+.app__container .main-menu > h3 {
+  text-align: center;
 }
 
 .app__container main .main-menu__options {
@@ -208,15 +218,15 @@ body {
   font-weight: bold;
 }
 
-.ranking__card table { 
-  border-collapse: collapse; 
-  display: table; 
+.ranking__card table {
+  border-collapse: collapse;
+  display: table;
   white-space: inherit;
 }
 
 .ranking__card tbody {
   border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc; 
+  border-bottom: 1px solid #ccc;
 }
 
 .ranking__card td.label {
@@ -227,9 +237,9 @@ body {
 
 .ranking__card td {
   text-align: left;
-  padding-left: 10px; 
-  padding-top: 5px; 
-  padding-bottom: 5px; 
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   font-size: 0.85em;
 }
 
@@ -243,7 +253,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 20px;
   overflow: hidden;
-  width: 80%;
+  width: 100%;
   height: 44px;
 }
 
@@ -311,16 +321,66 @@ table tbody td p {
   margin: 5px 0px;
 }
 
+.data-buttons {
+  display: flex;
+  margin: auto;
+  width: 400px;
+  max-width: 90%;
+  justify-content: center;
+}
+
+.data-buttons button {
+  margin: 5px;
+  margin-top: 30px;
+  display: flex;
+  width: 180px;
+  justify-content: center;
+  margin-bottom: 0px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.data-buttons button span {
+  margin-left: 5px;
+}
+
+.data-links {
+  display: flex;
+  margin: auto;
+  width: 400px;
+  max-width: 90%;
+  justify-content: center;
+}
+
+.data-links button {
+  margin: 5px;
+  width: 180px;
+  text-align: center;
+}
+
+hr {
+  margin: auto;
+  margin-top: 0px;
+  width: 60%;
+}
+
+.grafico {
+  width: 60%;
+  padding: 20px;
+  margin: auto;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  margin-bottom: 30px;
+  margin-top: 0px;
+  border-radius: 10px;
+}
+/* /media/finor.png */
 @media screen and (max-width: 768px) {
   .app__container {
     width: 100%;
     max-width: auto;
     min-height: 100vh;
-  }
-  .finor-form .form__field input,
-  .finor-form .form__field select {
-    width: 80%;
-    margin: auto;
   }
 
   .finor-form {
@@ -338,5 +398,9 @@ table tbody td p {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+  }
+
+  .grafico {
+    width: 90%;
   }
 }
