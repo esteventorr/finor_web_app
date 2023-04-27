@@ -11,9 +11,15 @@
   <tbody>
     {% for expense in expenses %}
     <tr>
+      {% if expense.category != "ingreso" %}
       <td>
+        <p class="gasto">{{ expense.value|to_float|currency}}</p>
+      </td>
+      {% else %}
+      <td class="ingreso">
         <p>{{ expense.value|to_float|currency}}</p>
       </td>
+      {% endif %}
       <td>
         <p>{{ expense.description }}</p>
       </td>

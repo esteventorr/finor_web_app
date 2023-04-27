@@ -2,15 +2,19 @@
   <div class="analisis-gastos">
     <h3 class="title">▶️ Análisis Gastos 🤖</h3>
     <h4 class="title">📅 Movimientos del último mes 🏦</h4>
-    <button>
-      <a href="/crear-gastos/">Agregar Gasto</a>
-    </button>
-    <button>
-      <a href="#rankings">Rankings</a>
-    </button>
-    <button id="boton-grafico">Graph</button>
-    <button id="boton-gastos">Expenses</button>
-    
+    <div class="data-links">
+      <button>
+        <a href="/crear-gastos/">Agregar Gasto</a>
+      </button>
+      <button>
+        <a href="#rankings">Rankings</a>
+      </button>
+    </div>    
+    <div class="data-buttons">
+      <button id="boton-grafico">Ver Gráfico <span class="material-symbols-outlined">pie_chart</span></button>
+      <button id="boton-gastos">Ver Tabla <span class="material-symbols-outlined">table</span></button>
+    </div>
+    <hr>
     <div class="tabla-transacciones" id="tabla-transacciones">
       {% include "control_finanzas/components/expenses-table.html" %}
     </div>
