@@ -1,6 +1,10 @@
 {
-    "prettier.tabWidth": 2,
-    "emmet.includeLanguages": {
-      "django-html": "html"
-    }
+  "prettier.tabWidth": 2,
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none"
 }

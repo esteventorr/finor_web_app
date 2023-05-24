@@ -1,9 +1,5 @@
-$("#goalForm").on("submit", function (event) {
+$("#signupForm").on("submit", function (event) {
   event.preventDefault();
-
-  const valueInput = $("#value-input");
-  const floatValue = unformatCurrency(valueInput.val());
-  valueInput.val(floatValue);
 
   const formData = new FormData(this);
   const formURL = $(this).data("url");
@@ -18,11 +14,10 @@ $("#goalForm").on("submit", function (event) {
       console.warn(response);
       $("#message").html("<p>Objetivo guardado con éxito.</p>");
       $("#message").css("color", "green");
+      window.location.href = "/loginpage";
     },
     error: function () {
-      $("#message").html(
-        "<p>Error al guardar el objetivo. Inténtalo de nuevo.</p>"
-      );
+      $("#message").html("<p>Error al guardar el objetivo. Inténtalo de nuevo.</p>");
       $("#message").css("color", "red");
     },
   });

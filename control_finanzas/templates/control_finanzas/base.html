@@ -1,79 +1,213 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-
-<head>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#ffffff" />
-  <meta name="description" content="Finor - Web App For Money Management" />
-  <title>Finor</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings:
-      'FILL' 0,
-      'wght' 400,
-      'GRAD' 0,
-      'opsz' 24
-    }
-    </style>
-</head>
-
-<body>
-  <div class="app__container">
-    <header class="header">
-      <div class="header__title">
-        <a href="/" class="btn">
-          <img src="/media/finor.png" style="height: 80px;">
-        </a>
-      </div>
-    </header>
-    <main>{% block content %} {% endblock %}</main>
-  </div>
-  <script>
-    function unformatCurrency(value) {
-      return parseFloat(value.replace(/[^0-9.-]+/g, ""));
-    }
-    function formatCurrency() {
-      const inputField = document.getElementById("value-input");
-      let value = inputField.value;
-
-      // Elimina cualquier carácter no numérico y el punto decimal
-      value = value.replace(/[^\d.]/g, "");
-
-      // Separa la parte entera y decimal
-      const parts = value.split(".");
-      let intPart = parts[0];
-      const decimalPart = parts.length > 1 ? "." + parts[1] : "";
-
-      // Aplica el formato deseado a la parte entera
-      const intParts = [];
-      let count = 1;
-      while (intPart.length > 0) {
-        if (count % 2 == 1) {
-          separator = ",";
-        } else {
-          separator = "'";
-        }
-        intParts.push(intPart.slice(-3));
-        intPart = intPart.slice(0, -3);
-        if (intPart.length > 0) {
-          intParts.push(separator);
-        }
-        count += 1;
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Finor - Web App For Money Management" />
+    <title>Finor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
       }
-      const formattedIntPart = intParts.reverse().join("");
+    </style>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
 
-      // Combina la parte entera y decimal formateadas
-      const formattedValue = formattedIntPart + decimalPart;
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBnaDru3fROy131dyPDeoDFwEVsoQOkvMo",
+        authDomain: "finor-pi-1.firebaseapp.com",
+        projectId: "finor-pi-1",
+        storageBucket: "finor-pi-1.appspot.com",
+        messagingSenderId: "921981192102",
+        appId: "1:921981192102:web:22c2731beeeca2348af167",
+      };
 
-      // Actualiza el valor del campo de entrada
-      inputField.value = formattedValue;
-    }
-  </script>
-</body>
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
 
+      // Initialize Firebase Authentication and get a reference to the service
+      window.auth = getAuth(app);
+      window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+      window.logout = async function () {
+        try {
+          await signOut(auth);
+          // Luego de que el usuario ha cerrado sesión, puedes enviar el request al servidor Django
+          // para que limpie la información de la sesión.
+          fetch("/setuser/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: "", // no hay datos del usuario
+          });
+        } catch (error) {
+          console.error("Error al cerrar la sesión: ", error);
+        }
+      };
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      onAuthStateChanged(auth, (user) => {
+        const logoutButton = document.getElementById("logoutButton");
+        if (user) {
+          // El usuario ha iniciado sesión
+          console.log("Usuario logueado: ", user);
+          logoutButton.style.display = "flex";
+          logoutButton.style.justifyContent = "center";
+          logoutButton.style.alignItems = "center";
+          logoutButton.style.color = "white";
+          logoutButton.style.backgroundColor = "#000000";
+          logoutButton.style.border = "none";
+          logoutButton.style.borderRadius = "5px";
+          logoutButton.style.padding = "10px";
+          logoutButton.style.fontFamily = "sans-serif";
+          logoutButton.style.fontSize = "16px";
+          fetch("/setuser/", {
+            // remplaza con la URL correcta
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: `displayName=${encodeURIComponent(user.displayName)}&uid=${encodeURIComponent(
+              user.uid
+            )}`,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success" || data.status === "failure") {
+                // Elimina el slash final si existe
+                let currentPath = window.location.pathname.endsWith('/') ? window.location.pathname.slice(0, -1) : window.location.pathname;
+                let redirectPath = data.redirect.endsWith('/') ? data.redirect.slice(0, -1) : data.redirect;
+
+                // Solo redirige si la URL actual es la página de inicio de sesión
+                if (currentPath === "/loginpage") {
+                    window.location.href = data.redirect;
+                }
+              }
+            });
+        } else {
+          // No hay un usuario logueado, limpia la sesión
+          console.log("No hay un usuario logueado");
+          logoutButton.style.display = "none";
+          fetch("/setuser/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: "",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success" || data.status === "failure") {
+                // Elimina el slash final si existe
+                let currentPath = window.location.pathname.endsWith('/') ? window.location.pathname.slice(0, -1) : window.location.pathname;
+                let redirectPath = data.redirect.endsWith('/') ? data.redirect.slice(0, -1) : data.redirect;
+
+                // Solo redirige si la URL actual no es la misma que la URL de redirección
+                if (currentPath !== redirectPath && currentPath !== "/signuppage") {
+                    window.location.href = data.redirect;
+                }
+              }
+            });
+        }
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="app__container">
+      <header class="header">
+        <div style="position: relative;" class="header__title">
+          <a href="/" class="btn">
+            <img src="/media/finor.png" style="height: 80px" />
+          </a>
+          <button 
+            id="logoutButton" 
+            style="display: none; position: absolute; right: 0px; top: 15px;" 
+            onclick="logout()"
+          >
+            Salir 
+            <span style="margin: 5px;" class="material-icons">
+              logout
+            </span>
+          </button>
+        </div>
+      </header>
+      <main>{% block content %} {% endblock %}</main>
+    </div>
+    <script>
+      function unformatCurrency(value) {
+        return parseFloat(value.replace(/[^0-9.-]+/g, ""));
+      }
+      function formatCurrency() {
+        const inputField = document.getElementById("value-input");
+        let value = inputField.value;
+
+        // Elimina cualquier carácter no numérico y el punto decimal
+        value = value.replace(/[^\d.]/g, "");
+
+        // Separa la parte entera y decimal
+        const parts = value.split(".");
+        let intPart = parts[0];
+        const decimalPart = parts.length > 1 ? "." + parts[1] : "";
+
+        // Aplica el formato deseado a la parte entera
+        const intParts = [];
+        let count = 1;
+        while (intPart.length > 0) {
+          if (count % 2 == 1) {
+            separator = ",";
+          } else {
+            separator = "'";
+          }
+          intParts.push(intPart.slice(-3));
+          intPart = intPart.slice(0, -3);
+          if (intPart.length > 0) {
+            intParts.push(separator);
+          }
+          count += 1;
+        }
+        const formattedIntPart = intParts.reverse().join("");
+
+        // Combina la parte entera y decimal formateadas
+        const formattedValue = formattedIntPart + decimalPart;
+
+        // Actualiza el valor del campo de entrada
+        inputField.value = formattedValue;
+      }
+    </script>
+  </body>
 </html>
