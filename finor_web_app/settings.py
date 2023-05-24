@@ -14,6 +14,12 @@ import os
 from pathlib import Path
 import sys
 
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate("finor-pi-1-firebase.json")
+firebase_admin.initialize_app(cred)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&z5pv%(=^st8zxh1aq2zsi1*33-2v1)onq_)s&vp51)t1wjdez'
+SECRET_KEY = 'fake-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.2", "192.168.1.40", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["192.168.1.2", "192.168.1.20", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -52,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'finor_web_app.firebase_auth_middleware.FirebaseAuthMiddleware'
+    
 ]
 
 ROOT_URLCONF = 'finor_web_app.urls'

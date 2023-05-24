@@ -6,6 +6,9 @@ Make sure you got Python and Django correctly installed in your machine, additio
 Finor requires the following modules:
 - python -m pip install django-browser-reload
 - python -m pip install requests
+- python -m pip install python-dateutil
+- python -m pip install Pillow
+- python -m pip install matplotlib
 
 Run the Migrate Command:
 - python manage.py migrate

@@ -5,7 +5,8 @@ from .models import Expense, Goal, Reminder, Account
 BASE_URL = "https://i1fkmq0q73.execute-api.us-east-1.amazonaws.com/test/"
 
 
-def GET_expenses() -> list[Expense]:
+def GET_expenses(request) -> list[Expense]:
+    user_display_name = request.session['user_display_name']
     url = f"{BASE_URL}expenses"
     payload = {
         "operation": "GET",
@@ -13,7 +14,7 @@ def GET_expenses() -> list[Expense]:
             "IndexName": "user-index",
             "KeyConditionExpression": "#username = :user",
             "ExpressionAttributeValues": {
-                ":user": "mock_user"
+                ":user": user_display_name
             },
             "ExpressionAttributeNames": {
                 "#username": "user"
@@ -23,9 +24,6 @@ def GET_expenses() -> list[Expense]:
     response = requests.post(url, json=payload)
     logging.info("Obteniendo Expenses...")
     logging.info(response)
-    #logging.info(response.json())
-    #logging.info(response.status_code)
-    #logging.info(response.json().get('items'))
 
     if response.status_code == 200:
         # return response json() as Expense array
@@ -62,7 +60,8 @@ def POST_expense(expense: Expense):
     return ''
 
 
-def GET_goals() -> list[Goal]:
+def GET_goals(request) -> list[Goal]:
+    user_display_name = request.session['user_display_name']
     url = f"{BASE_URL}goals"
     payload = {
         "operation": "GET",
@@ -70,7 +69,7 @@ def GET_goals() -> list[Goal]:
             "IndexName": "user-index",
             "KeyConditionExpression": "#username = :user",
             "ExpressionAttributeValues": {
-                ":user": "mock_user"
+                ":user": user_display_name
             },
             "ExpressionAttributeNames": {
                 "#username": "user"
@@ -125,7 +124,8 @@ def POST_goal(goal: Goal):
     return ''
 
 
-def GET_reminders() -> list[Reminder]:
+def GET_reminders(request) -> list[Reminder]:
+    user_display_name = request.session['user_display_name']
     url = f"{BASE_URL}reminders"
     payload = {
         "operation": "GET",
@@ -133,7 +133,7 @@ def GET_reminders() -> list[Reminder]:
             "IndexName": "user-index",
             "KeyConditionExpression": "#username = :user",
             "ExpressionAttributeValues": {
-                ":user": "mock_user"
+                ":user": user_display_name
             },
             "ExpressionAttributeNames": {
                 "#username": "user"
@@ -171,6 +171,28 @@ def POST_reminder(reminder: Reminder):
                 "target_date": reminder.target_date,
                 "user": reminder.user,
                 "description": reminder.description
+            }
+        }
+    }
+    logging.info(payload)
+    response = requests.post(url, json=payload)
+    if response:
+        return response
+    return ''
+
+def POST_accounts(account: Account):
+    url = f"{BASE_URL}accounts"
+    payload = {
+        "operation": "POST",
+        "payload": {
+            "Item": {
+                "id": account.id,
+                "name": account.name,
+                "born_date": account.born_date,
+                "first_name": account.first_name,
+                "last_name": account.last_name,
+                "user": account.user,
+                "uid": account.uid
             }
         }
     }
