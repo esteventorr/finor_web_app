@@ -9,32 +9,39 @@
     </div>
     <button class="add-button">+</button>
 </div>
-{% endfor %}
 <div class="modal">
     <div class="modal-content">
-        <h2>Agregar valor al objetivo {{ goal.name }}</h2>
+        <h2>Agregar valor al objetivo {{ goal.id }} {{ goal.name }}</h2>
         <button class="close-modal">x</button>
-        <form id="value-form">
+        <form id="value-form" data-url="{% url 'abonar_objetivo' %}">
+            {% csrf_token %}
             <label for="value-input">Valor:</label>
-            <input type="number" id="value-input" required>
-            <button class="submit-button">Agregar</button>
+            <input id="value-input" oninput="formatCurrency()" type="text" name="value" required />
+            <button class="submit-button" type="submit">Abonar</button>
+            <div id="message"></div>
         </form>
+        {% load static %}
+        <script src="{% static 'js/abonar_objetivo.js' %}" defer></script>
     </div>
 </div>
+{% endfor %}
+
 
 <style>
     .goal-container {
-        width: 80%;
+        width: 400px;
+        max-width: 80%;
         height: 20%;
-        background-color: lightblue;
-        border-radius: 10px;
+        background-color: rgb(250, 250, 250);
+        border-radius: 8px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin: 1% auto;
-        border: 1px solid black;
+        border: 1px solid rgba(131, 150, 255, 0.3);
         box-sizing: border-box;
+        margin: 40px auto;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     }
 
     .goal-name {
@@ -47,16 +54,17 @@
         position: relative;
         width: 80%;
         height: 20px;
-        background-color: #ccc;
+        background-color: #fff;
         border-radius: 10px;
         overflow: hidden;
+        border: rgba(0, 0, 0, 0.25) solid 1px;
 
     }
 
     .progress {
         position: absolute;
         height: 100%;
-        background-color: green;
+        background-color: rgb(0, 255, 0);
         width: 50%;
         opacity: 50%;
     }
@@ -66,6 +74,10 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        width: 100%;
+        text-align: center;
+        z-index: 1;
+        text-shadow: 1px 1px 2px #fff;
     }
 
 
@@ -130,34 +142,3 @@
         cursor: pointer;
     }
 </style>
-
-<script>
-    const addButton = document.querySelector('.add-button');
-    const modal = document.querySelector('.modal');
-    const closeModalbutton = document.querySelector('.close-modal');
-    const submitButton = document.querySelector('submit-button');
-    const progressElement = document.querySelector('.progress');
-
-    addButton.addEventListener('click', openModal);
-    closeModalbutton.addEventListener('click', closeModal);
-    submitButton.addEventListener('click', increaseProgress);
-
-    function openModal() {
-        modal.style.display = 'block';
-    }
-
-    function closeModal() {
-        modal.style.display = 'none';
-    }
-
-    function increaseProgress() {
-        let currentProgress = parseInt(progressElement.style.width) || 0;
-        const increment = 10; // Cantidad que aumenta la barra de progreso
-
-        if (currentProgress + increment <= 100) {
-            currentProgress += increment;
-            progressElement.style.width = currentProgress + '%';
-        }
-        closeModal();
-    }
-</script>

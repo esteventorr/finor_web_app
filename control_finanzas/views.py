@@ -128,6 +128,26 @@ def ingresar_objetivos(request):
     )
 
 @require_auth
+def abonar_objetivo(request):
+    logging.info("Abonando objetivo...")
+    if request.method == "POST":
+        data = request.POST
+        
+        expense = Expense(
+            value=data["value"],
+            description="{{}}",
+            category="goalabono",
+            user=request.session['user_display_name'],
+        )
+
+        response = POST_expense(expense)
+        response_data = response.json()
+        logging.info(response_data)
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({"error": "Invalid request method"})
+
+@require_auth
 def ingresar_recordatorios(request):
     logging.info("Ingresando recordatorios...")
     reminders = GET_reminders(request)
