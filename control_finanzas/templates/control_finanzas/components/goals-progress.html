@@ -6,7 +6,7 @@
     <div class="goal-name">{{ goal.name }}</div>
     <div class="progress-bar">
         <div class="goal-value">{{ goal.total_expenses|to_float|currency }}</div>
-        <div class="progress"></div>
+        <div class="progress" style="width: {{ goal.progress }}%;"></div>
     </div>
     <button data-goal-id="{{ goal.id }}" class="add-button">+</button>
 </div>

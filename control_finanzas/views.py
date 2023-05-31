@@ -125,6 +125,11 @@ def ingresar_objetivos(request):
     logging.info(mensaje)
     for goal in goals:
         goal.total_expenses = sum(int(expense.value) for expense in expenses if expense.description == goal.id)
+        goal.value = float(goal.value)
+        if goal.total_expenses >= goal.value:
+            goal.progress = 100
+        else:
+            goal.progress = int((goal.total_expenses / goal.value) * 100)
     return render(
         request,
         "control_finanzas/crear-objetivos.html",
