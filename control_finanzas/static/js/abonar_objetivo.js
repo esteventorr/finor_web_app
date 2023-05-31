@@ -8,16 +8,20 @@ function closeModal(event) {
 }
 
 function increaseProgress(event) {
-  const modal = $(event.target).closest(".modal");
-/*   let currentProgress = parseInt(progressElement.style.width) || 0;
-  const increment = 10; // Cantidad que aumenta la barra de progreso
+  const goalId = $(event.target).attr("data-goal-id");
+  const goalValue = $(`.goal-objective-value[data-goal-id="${goalId}"]`).text().trim();
+  console.log("goal value: " + goalValue);
 
-  if (currentProgress + increment <= 100) {
-    currentProgress += increment;
-    progressElement.style.width = currentProgress + "%";
-  }
-  closeModal(); */
+  const totalExpenses = $(`.goal-objective-value[data-goal-id="${goalId}"]`).siblings(".goal-value");
+  const totalExpensesValue = totalExpenses.text().trim();
+  console.log("total expenses: " + totalExpensesValue);
+
+  const progressPercentage = (parseFloat(totalExpensesValue) / parseFloat(goalValue)) * 100;
+  console.log("percentage: " + progressPercentage);
+
+  $(event.target).closest(".progress-bar").find(".progress").css("width", progressPercentage + "%");
 }
+
 
 const addButtons = $(".add-button");
 const modal = document.querySelector(".modal");

@@ -4,6 +4,7 @@
 {% for goal in goals %}
 <div class="goal-container">
     <div class="goal-name">{{ goal.name }}</div>
+    <div class="goal-objective-value">{{ goal.value|to_float|currency }}</div>
     <div class="progress-bar">
         <div class="goal-value">{{ goal.total_expenses|to_float|currency }}</div>
         <div class="progress" style="width: {{ goal.progress }}%;"></div>
@@ -66,7 +67,7 @@
         position: absolute;
         height: 100%;
         background-color: rgb(0, 255, 0);
-        width: 50%;
+        width: 0%;
         opacity: 50%;
     }
 
