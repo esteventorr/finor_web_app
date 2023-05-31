@@ -115,16 +115,20 @@ def ingresar_gastos(request):
 @require_auth
 def ingresar_objetivos(request):
     logging.info("Ingresando objetivos...")
+    unfiltered_expenses = GET_expenses(request)
+    expenses = [expense for expense in unfiltered_expenses if expense.category == "goalabono"]
     goals = GET_goals(request)
     if goals:
         mensaje = "Objetivo creado con éxito."
     else:
         mensaje = "Error al crear el objetivo."
     logging.info(mensaje)
+    for goal in goals:
+        goal.total_expenses = sum(int(expense.value) for expense in expenses if expense.description == goal.id)
     return render(
         request,
         "control_finanzas/crear-objetivos.html",
-        {"mensaje": mensaje, "goals": goals},
+        {"mensaje": mensaje, "goals": goals, "expenses": expenses},
     )
 
 @require_auth
@@ -167,7 +171,8 @@ def analisis_gastos(request):
     user_display_name = request.session['user_display_name']
     user_uid = request.session['user_uid']
     logging.info(f"Usuario autenticado: {user_display_name} {user_uid}")
-    expenses = GET_expenses(request)
+    unfiltered_expenses = GET_expenses(request)
+    expenses = [expense for expense in unfiltered_expenses if expense.category != "goalabono"]
     rankings = []
     if expenses:
         # Agrupar gastos por categoría
@@ -337,6 +342,31 @@ def create_goal(request):
         response_data = response.json()
         logging.info(response_data)
         return JsonResponse(response_data)
+    else:
+        return JsonResponse({"error": "Invalid request method"})
+    
+@csrf_exempt
+def addgoalabonoexpense(request):
+    if request.method == "POST":
+        data = request.POST
+        logging.info(data)
+        try:
+            image_url = "https://esteventorr.github.io/images/graphical/no-image.png"
+            expense = Expense(
+                value=data["value-input"],
+                description=data["goal-id"],
+                category="goalabono",
+                photo=image_url,
+                date="2000-01-01",
+                user=request.session['user_display_name'],
+            )
+            POST_expense(
+                expense
+            )
+            return JsonResponse({"message": "Abono generado exitosamente"})
+        except Exception as e:
+            logging.error(f"Error al abonar: {e}")
+            return JsonResponse({"message": "Error al abonar"}, status=500)
     else:
         return JsonResponse({"error": "Invalid request method"})
 

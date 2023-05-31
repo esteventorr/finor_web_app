@@ -1,31 +1,32 @@
 {% load custom_filters %}
-
+{% load static %}
+        
 {% for goal in goals %}
 <div class="goal-container">
     <div class="goal-name">{{ goal.name }}</div>
     <div class="progress-bar">
-        <div class="goal-value">{{ goal.value|to_float|currency }}</div>
+        <div class="goal-value">{{ goal.total_expenses|to_float|currency }}</div>
         <div class="progress"></div>
     </div>
-    <button class="add-button">+</button>
+    <button data-goal-id="{{ goal.id }}" class="add-button">+</button>
 </div>
-<div class="modal">
+<div class="modal {{ goal.id }}">
     <div class="modal-content">
-        <h2>Agregar valor al objetivo {{ goal.id }} {{ goal.name }}</h2>
+        <h2>Agregar valor al objetivo "{{ goal.name }}"</h2>
         <button class="close-modal">x</button>
-        <form id="value-form" data-url="{% url 'abonar_objetivo' %}">
+        <form class="value-form" data-url="{% url 'abonar_objetivo' %}">
             {% csrf_token %}
             <label for="value-input">Valor:</label>
-            <input id="value-input" oninput="formatCurrency()" type="text" name="value" required />
+            <input class="value" oninput="formatCurrency()" type="text" name="value-input" required />
+            <input type="hidden" name="goal-id" value="{{ goal.id }}">
             <button class="submit-button" type="submit">Abonar</button>
-            <div id="message"></div>
+            <div class="message"></div>
         </form>
-        {% load static %}
-        <script src="{% static 'js/abonar_objetivo.js' %}" defer></script>
+        
     </div>
 </div>
 {% endfor %}
-
+<script src="{% static 'js/abonar_objetivo.js' %}" defer></script>
 
 <style>
     .goal-container {
